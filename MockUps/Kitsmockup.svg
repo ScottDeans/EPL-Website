@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Kitsmockup.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="375"
+     inkscape:cy="514.28571"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="956"
+     inkscape:window-height="597"
+     inkscape:window-x="717"
+     inkscape:window-y="251"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2985"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion2987"><rect
+           id="rect2989"
+           width="745.71429"
+           height="82.85714"
+           x="-2.8571429"
+           y="6.6478968"
+           style="fill:#000000" /></flowRegion><flowPara
+         id="flowPara2991">EPL                  Kits                  logout</flowPara></flowRoot>    <rect
+       style="fill:#0000ff"
+       id="rect2993"
+       width="742.85712"
+       height="85.714279"
+       x="0"
+       y="72.362183" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3003"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion3005"><rect
+           id="rect3007"
+           width="745.71429"
+           height="80"
+           x="0"
+           y="75.219322"
+           style="fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara3009">Home      Bookings      kits      admin</flowPara></flowRoot>    <rect
+       style="fill:#f2f2f2"
+       id="rect2991"
+       width="265.71429"
+       height="91.428574"
+       x="-2.8571429"
+       y="160.93361" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2993"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion2995"><rect
+           id="rect2997"
+           width="240"
+           height="77.14286"
+           x="17.142857"
+           y="166.6479" /></flowRegion><flowPara
+         id="flowPara2999">Select Kit</flowPara><flowPara
+         id="flowPara3001" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3004"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion3006"><rect
+           id="rect3008"
+           width="691.42859"
+           height="671.42859"
+           x="17.142857"
+           y="263.79074" /></flowRegion><flowPara
+         id="flowPara3010">Name:            Location:</flowPara><flowPara
+         id="flowPara3016">Type:</flowPara><flowPara
+         id="flowPara3018">KitBarcode:      </flowPara><flowPara
+         id="flowPara3020" /><flowPara
+         id="flowPara3022">tags:</flowPara><flowPara
+         id="flowPara3024">Location</flowPara><flowPara
+         id="flowPara3026">Contents:</flowPara><flowPara
+         id="flowPara3028">Current bookings</flowPara><flowPara
+         id="flowPara3046">Future bookings</flowPara><flowPara
+         id="flowPara3048">Description</flowPara><flowPara
+         id="flowPara3042" /><flowPara
+         id="flowPara3044">Notes:</flowPara></flowRoot>  </g>
+</svg>
