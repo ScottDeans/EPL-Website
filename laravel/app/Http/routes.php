@@ -19,3 +19,7 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::resource('bookings', 'BookingsController');
+Route::resource('kits', 'KitController');
+Route::resource('admin', 'AdminController');
