@@ -18,7 +18,7 @@ class WelcomeController extends Controller {
 	 *
 	 * @return void
 	 */
-	public function __construct()
+	/*public function __construct()
 	{
 		$this->middleware('guest');
 	}
@@ -32,5 +32,9 @@ class WelcomeController extends Controller {
 	{
 		return view('welcome');
 	}
+	 public function show() {
+        //would gather information about the selected kit from the database
+        return view('kits.show');
+    }
 
 }
