@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration {
 			$table->string('password', 60);
 			$table->string('branch');
 			$table->boolean('manager');
+			$table->boolean('admin');
 			$table->rememberToken();
 			$table->timestamps();
 		});
