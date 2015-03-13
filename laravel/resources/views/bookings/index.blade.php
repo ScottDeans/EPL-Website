@@ -1,6 +1,16 @@
 @extends('app')
+ <div>
 
 @section('content')
+
+if (Auth::check())
+{
+    
+}
+else
+    return redirect(*/*);
+     </div>
+     
         {!! Form::open() !!}
             <div>
             {!! Form::label('booking', 'Select kit:') !!}

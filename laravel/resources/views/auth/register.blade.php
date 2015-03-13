@@ -54,6 +54,7 @@
 								<button type="submit" class="btn btn-primary">
 									Register
 								</button>
+								
 							</div>
 						</div>
 					</form>
