@@ -25,13 +25,22 @@ class CreateTransfersTable extends Migration {
 			$table->string('source');
 			$table->string('destination');
 			$table->string('status');
-			$table->date('date_status_changed');
 			
-			$table->integer('status_update_actor')->unsigned();
-			$table->foreign('status_update_actor')
+			$table->integer('shipper')->unsigned();
+			$table->foreign('shipper')
 			      ->references('id')->on('users')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
+			      
+			$table->date('shipped_on');
+			      
+			$table->integer('receiver')->unsigned();
+			$table->foreign('receiver')
+			      ->references('id')->on('users')
+			      ->onDelete('cascade')
+			      ->onUpdate('cascade');
+			      
+			$table->date('received_on');
 			
 			$table->timestamps();
 		});
