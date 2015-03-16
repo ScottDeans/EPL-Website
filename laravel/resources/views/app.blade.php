@@ -33,7 +33,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="/bookings">Bookings</a></li>
 					<li><a href="/kits">Kits</a></li>
-					<li><a href="/admin">Admin</a></li>
+					<li><a href="/transfers">Transfers</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
