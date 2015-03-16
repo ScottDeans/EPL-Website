@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKitsTable extends Migration {
+class CreateAssetsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateKitsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('kits', function(Blueprint $table)
+		Schema::create('assets', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('kit_name');
-			$table->string('barcode');
-			$table->string('kit_type');
-			$table->string('kit_description');
-			$table->string('current_location');
+			
+			$table->string('asset_tag');
+			$table->string('description');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +29,7 @@ class CreateKitsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('kits');
+		Schema::drop('assets');
 	}
 
 }
