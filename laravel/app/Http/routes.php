@@ -16,7 +16,10 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
-Route::resource('bookings', 'BookingsController');
-Route::resource('kits', 'KitController');
-Route::resource('admin', 'AdminController');
+Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
+Route::get('kits', ['middleware' => 'auth','uses' => 'KitController@index']);
+Route::get('transfers', ['middleware' => 'auth','uses' => 'TransfersController@index']);
+
 Route::resource('welcome', 'WelcomeController@index');
+
+//Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
