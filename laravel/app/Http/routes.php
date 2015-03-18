@@ -19,7 +19,7 @@ Route::controllers([
 Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
 Route::get('kits', ['middleware' => 'auth','uses' => 'KitController@index']);
 Route::get('transfers', ['middleware' => 'auth','uses' => 'TransfersController@index']);
-
+//Route::get('kit/index', ['middleware' => 'auth','uses' => 'kitController@index']);
 Route::resource('welcome', 'WelcomeController@index');
 
 //Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
