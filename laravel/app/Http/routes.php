@@ -16,10 +16,17 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
 Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
 Route::get('kits', ['middleware' => 'auth','uses' => 'KitController@index']);
 Route::get('transfers', ['middleware' => 'auth','uses' => 'TransfersController@index']);
-//Route::get('kit/index', ['middleware' => 'auth','uses' => 'kitController@index']);
+
+Route::delete('associations/{booking_id}/{user_id}/destroy',['as' => 'associations.destroy', 'middleware'=>'auth', 'uses'=>'AssociationsController@destroy']);
+Route::post('associations/{booking_id}/{user_id}/store',['as' => 'associations.store', 'middleware'=>'auth', 'uses'=>'AssociationsController@store']);
+
+Route::group(['middleware'=>'auth'], function() {
+    Route::resource('associations', 'AssociationsController', array( 'except'=>array('destroy', 'store')));
+});
+
 Route::resource('welcome', 'WelcomeController@index');
 
-//Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);

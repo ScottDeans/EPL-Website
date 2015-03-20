@@ -28,6 +28,8 @@ class CreateBookingsTable extends Migration {
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			 
+			$table->string('event_name');
+			
 			$table->string('branch');     
 			$table->date('booking_start');
 			$table->date('booking_end');
