@@ -9,7 +9,10 @@ class AssociationTableSeeder extends Seeder {
         DB::table('associations')->delete();
         
         for($i = 1; $i <= 20; $i++){
-            Association::create(['booking_id' => rand(1,10), 'associated_user' =>rand(1,30)]);
+            $assoc = new Association();
+            $assoc->booking_id = rand(1,10);
+            $assoc->associated_user = rand(1,30);
+            $assoc->save();
         }
         
     }
