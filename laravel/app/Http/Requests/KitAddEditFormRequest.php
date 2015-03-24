@@ -1,8 +1,9 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-
-class KitFormRequest extends Request {
+use DB;
+use Auth;
+class KitAddEditFormRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -23,8 +24,7 @@ class KitFormRequest extends Request {
 	{
 		return [
 			//
-			    'name' => 'required',
-
+				'name' => 'required',
 		];
 	}
 

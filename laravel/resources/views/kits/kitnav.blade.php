@@ -8,7 +8,8 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="/kits">ViewKits</a></li>
-					<li><a href="/kits">AddKits</a></li>
+	</li>{!! Form::open(array('route'=>array('kits.showadd'),'method'=>'GET')) !!}
+         {!! Form::submit('View Kit') !!}{!! Form::close() !!}</li>
 					<li><a href="/kits">TransferKits</a></li>
 				</ul>
 	</div>
