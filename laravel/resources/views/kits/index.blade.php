@@ -6,7 +6,7 @@
 @section('content')
 @section('kitcontent')
 
-        {!! Form::open() !!}  
+     
       <table class="responstable">
     
 <tr>
@@ -29,7 +29,8 @@
   <td align="center">  {!! $value->kit_name!!} </td>
   <td align="center">  {!! $value->current_location  !!} </td>
    <td align="center">  {!! $value->barcode!!} </td>
-         <td>  {!! Form::button('Select Kit') !!}</td>
+          <td align="center">{!! Form::open(array('route'=>array('kits.show',$value->id),'method'=>'GET')) !!}
+         {!! Form::submit('View Kit') !!}</td>
    </tr>
 @endforeach
  </tr>
@@ -38,4 +39,6 @@
          
           @stop
 @stop
+
+
 

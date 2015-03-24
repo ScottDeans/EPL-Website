@@ -27,6 +27,12 @@ Route::post('associations/{booking_id}/{user_id}/store',['as' => 'associations.s
 Route::group(['middleware'=>'auth'], function() {
     Route::resource('associations', 'AssociationsController', array( 'except'=>array('destroy', 'store')));
 });
+Route::post('kits/{id}/{idd}/report',['as' => 'kits.report', 'middleware'=>'auth', 'uses'=>'KitController@report']);
+Route::get('kits/{id}/show',['as' => 'kits.show', 'middleware'=>'auth', 'uses'=>'KitController@show']);
+Route::group(['middleware'=>'auth'], function() {
+    Route::resource('kits', 'KitController', array( 'except'=>array('show','report')));
+});
+
 
 Route::resource('welcome', 'WelcomeController@index');
 
