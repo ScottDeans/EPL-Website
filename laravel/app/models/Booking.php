@@ -6,5 +6,6 @@ class Booking extends Model {
 
 	protected $table = 'bookings';
 	
+	
 
 }

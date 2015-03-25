@@ -7,10 +7,10 @@
 		<div class="container-fluid">
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="/kits">View Bookings</a></li>
-					<li><a href="/kits">Add Bookings</a></li>
+					<li><a href="/bookings">View Bookings</a></li>
+					<li><a href="/bookings/create">Add Bookings</a></li>
 				</ul>
-	</div>
+	        </div>
 		</div>
 	</nav>
 	@yield('bookingcontent')
