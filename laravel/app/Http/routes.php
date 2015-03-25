@@ -37,6 +37,9 @@ Route::group(['middleware'=>'auth'], function() {
     Route::resource('kits', 'KitController', array( 'except'=>array('show','report','add','showadd')));
 });
 
+Route::group(['middleware'=>'auth'], function() {
+    Route::resource('usermgmt', 'AdminController');
+});
 
 Route::resource('welcome', 'WelcomeController@index');
 
