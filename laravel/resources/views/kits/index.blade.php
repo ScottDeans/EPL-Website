@@ -6,9 +6,10 @@
 @section('content')
 @section('kitcontent')
 
-     
-      <table class="responstable">
-    
+
+        
+      <table class="responstable"> 
+   
 <tr>
 <th>id</th>
 <th>kit_description</th>
@@ -17,7 +18,7 @@
 <th>current_location</th>
 <th>barcode</th>
 <th>More Details</th>
-</tr>";
+</tr>
 
   <tr>
 @foreach ($kits as $value) 
@@ -29,13 +30,16 @@
   <td align="center">  {!! $value->kit_name!!} </td>
   <td align="center">  {!! $value->current_location  !!} </td>
    <td align="center">  {!! $value->barcode!!} </td>
+  
           <td align="center">{!! Form::open(array('route'=>array('kits.show',$value->id),'method'=>'GET')) !!}
-         {!! Form::submit('View Kit') !!}</td>
+         {!! Form::submit('View Kit') !!}
+           {!! Form::close() !!}	
    </tr>
 @endforeach
  </tr>
+
 </table>
-             {!! Form::close() !!}	
+           
          
           @stop
 @stop

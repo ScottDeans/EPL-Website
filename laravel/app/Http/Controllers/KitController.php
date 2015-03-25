@@ -16,21 +16,30 @@ class KitController extends Controller {
         $kits = DB::table('kits')->select('id', 'kit_description','kit_name','kit_type','current_location','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
      
-        return view('kits.index',array('kits'=>$kits));
+        return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
         
     }
     
     public function show($id) {
+    $id= intval($id);
+    var_dump($id);
         //would gather information about the selected kit from the database
-         $booking = DB::table('kits')->where('id', $id)->first();
-        return view('kits.show', ['kitinfo' => $booking]);
+         $info = DB::table('kits')->where('id', $id)->first(); 
+         $kitassets = DB::table('kit_assets')->where('id', $id)->first();
+         $notes = DB::table('kit_notes')->where('id', $id)->first();
+         $assets = DB::table('assets')->where('id', $id)->first();
+        return view('kits.show', ['kitinfo' => $info,'kitassets' => $kitassets ,'kitnotes' => $notes,'assets' => $assets]);
     }
     public function store($bookingID, $userID)
 	{
 	}
-	  public function report( KitFormRequest $kitnote,$kitid)
+	  public function report( $kitid,KitFormRequest $kitnote)
 	{
-	
+	 $notes = DB::table('kit_notes')->where('id', $kitnote->id)->first();
+	 $addedtext=$kitnote->text." , ".$notes->kit_note;
+	DB::table('kit_notes')
+            ->where('id',$kitnote->id)
+            ->update(array('kit_note' =>$addedtext ));
    $kits = DB::table('kits')->select('id', 'kit_description','kit_name','kit_type','current_location','barcode')->get();
    $kits = DB::table('kits')->distinct()->get();
    return view('kits.index',array('kits'=>$kits));
@@ -45,14 +54,6 @@ class KitController extends Controller {
 	{
 	$user = DB::table('users')->where('username', Auth::User()->name);
 	if(!$user->manager=1){
-	/*
-	$kitnote->name;
-	$kitnote->type;
-	$kitnote->location;
-	$kitnote->barcode;
-	$kitnote->tags;
-	$kitnote->content;
-	$kitnote->description;*/
 	//$auth=Auth::user()->name
 	DB::table('kits')->insert(
     ['kit_name' => $kitnote->name,'id' => $kitnote->id,  
