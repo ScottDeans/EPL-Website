@@ -14,21 +14,7 @@ use View;
 class BookingsController extends Controller {
 
    // protected $user, $bookings, $associations;
-    
-    /*
-    public function _construct(User $user) {
-        $this->user = $user;
-    }
-    
-    public function _construct(Bookings $bookings) {
-        $this->bookings = $bookings;
-    }
-    
-    public function _construct(Associations $associations) {
-        $this->associations = $associations;
-    }
-    */
-    
+
     public function index () {
         /*
         $user = $this->user->where('name', Auth::User()->name)->first();
@@ -56,9 +42,9 @@ class BookingsController extends Controller {
         $bookingID = intval($bookingID);
         $booking = DB::table('bookings')->where('id', $bookingID)->first();
         
-        $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user', $user);
+        $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user');
         $users = DB::table('users')->whereIn('id', $assocs)->get();
-        
+
         return view('bookings.show', ['bookings'=> $booking, 'users'=>$users]);
 
     }

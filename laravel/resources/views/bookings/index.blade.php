@@ -6,57 +6,86 @@
 @section('content') 
 @section('bookingcontent')
 
-<p> 
-<br><h2>Your Bookings</h2></br>
-</p>
-<table class="responstable">
+<style>
+    
+    h4 {
+        position: relative;
+        left: 550px;
+    }
+    
+    h3 {
+        position: absolute;
+        left: 350px;
+        top: 260px;
+        font-size: 15px;
+    }
+</style>
+
+
+<h4>Your Bookings</h4>
+
+<table>
     <tr>
-        <th>Event Name</th>
-        <th>Kit Type</th>
-        <th>Booking Start Date</th>
-        <th>Booking End Date</th>
+        <th class="table_text">Event Name</th>
+        <th class="table_text">Booking User</th>
+        <th class="table_text">Kit Type</th>
+        <th class="table_text">Branch</th>
+        <th class="table_text">Booking Start Date</th>
+        <th class="table_text">Booking End Date</th>
         <th> </th>
     </tr>
 
     @foreach ($assocbookings as $assocbookings)
-    <tr>
-        <td align="center">{!! $assocbookings->event_name !!}</td>
-        <td align="center">{!! $assocbookings->kit_id !!}</td>
-        <td align="center">{!! $assocbookings->booking_start !!}</td>
-        <td align="center">{!! $assocbookings->booking_end !!}</td>
-        <td align="center">
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Detailed View') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Edit Bookings') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Delete Bookings') !!} </button>
-        </td>
-    </tr>
+        @if(count($assocbookings) != 0)
+            <tr>
+                <td align="center" class="table_text">{!! $assocbookings->event_name !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->kit_user !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->kit_id !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->branch !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->booking_start !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->booking_end !!}</td>
+                <td align="center" class="table_text">
+                    <button> {!! link_to ('bookings/'.$assocbookings->id, 'Detailed View') !!} </button>
+                    <button> {!! link_to ('associations/'.$assocbookings->id, 'Edit Bookings') !!} </button>
+                    <button> {!! link_to ('bookings/'.$assocbookings->id, 'Delete Bookings') !!} </button>
+                </td>
+            </tr>
+        @else
+            <tr>
+                <td>You have no bookings</td>
+            </tr>
+        @endif
     @endforeach
 </table>
 
-<p>
-    <br><h2>Branch Bookings</h2></br>
-</p>
+<br></br>
+
+<h4><br>Branch Bookings</h4>
 
 <table class="responstable">
     <tr>
-    <th>Event Name</th>
-    <th>Kit Type</th>
-    <th>Booking Start Date</th>
-    <th>Booking End Date</th>
-    <th> </th>
+        <th class="table_text">Event Name</th>
+        <th class="table_text">Booking User</th>
+        <th class="table_text">Kit Type</th>
+        <th class="table_text">Branch</th>
+        <th class="table_text">Booking Start Date</th>
+        <th class="table_text">Booking End Date</th>
+        <th> </th>
     </tr>
 
     @foreach ($bookings as $bookings)
         @if ($bookings->branch == $branch)
         <tr>
-            <td align="center">{!! $bookings->event_name !!}</td>
-            <td align="center">{!! $bookings->kit_id !!}</td>
-            <td align="center">{!! $bookings->booking_start !!}</td>
-            <td align="center">{!! $bookings->booking_end !!}</td>
-            <td align="center">
-                <button> {!! link_to ('associations/'.$bookings->id, 'Detailed View') !!} </button>
+            <td align="center" class="table_text">{!! $bookings->event_name !!}</td>
+            <td align="center" class="table_text">{!! $bookings->kit_user !!}</td>
+            <td align="center" class="table_text">{!! $bookings->kit_id !!}</td>
+            <td align="center" class="table_text">{!! $bookings->branch !!}</td>
+            <td align="center" class="table_text">{!! $bookings->booking_start !!}</td>
+            <td align="center" class="table_text">{!! $bookings->booking_end !!}</td>
+            <td align="center" class="table_text">
+                <button> {!! link_to ('bookings/'.$bookings->id, 'Detailed View') !!} </button>
                 <button> {!! link_to ('associations/'.$bookings->id, 'Edit Bookings') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->id, 'Delete Bookings') !!} </button>
+                <button> {!! link_to ('bookings/'.$bookings->id, 'Delete Bookings') !!} </button>
             </td>
         </tr>
         @endif
