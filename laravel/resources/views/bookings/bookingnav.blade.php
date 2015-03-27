@@ -7,7 +7,9 @@
 		<div class="container-fluid">
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
+
 					<li><a href="/bookings">View Bookings</a></li>
+
 					<li><a href="/bookings/create">Add Bookings</a></li>
 				</ul>
 	        </div>

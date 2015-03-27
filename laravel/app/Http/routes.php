@@ -18,6 +18,10 @@ Route::controllers([
 ]);
 
 Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
+Route::get('bookings/create', ['middleware' => 'auth','uses' => 'BookingsController@create']);
+Route::post('bookings/confirm', ['middleware' => 'auth','uses' => 'BookingsController@confirm']);
+Route::post('bookings/store', ['middleware' => 'auth','uses' => 'BookingsController@store']);
+Route::get('bookings/landing', ['middleware' => 'auth','uses' => 'BookingsController@landing']);
 Route::get('kits', ['middleware' => 'auth','uses' => 'KitController@index']);
 Route::get('transfers', ['middleware' => 'auth','uses' => 'TransfersController@index']);
 
