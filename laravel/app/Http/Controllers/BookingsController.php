@@ -59,11 +59,13 @@ class BookingsController extends Controller {
         $rules = array(
             'kitType' => 'required',
 		    'Start_Date' => 'required|date|after:today',
-	    	'End_Date' => 'required|date|after:Start_Date'
+	    	'End_Date' => 'required|date|after:Start_Date',
+	    	'branch_code' => 'required',
+	    	'event_name' => 'required'
 	        );
         $validator = Validator::make($input, $rules);
         if ($validator->fails()){
-            // If validation falis redirect back to login.
+            // If validation fails redirect back to login.
             return Redirect::to('/bookings/create')->withInput(Input::except('dates'))->withErrors($validator);
         }
         else {
@@ -93,7 +95,9 @@ class BookingsController extends Controller {
                         'kitType' => $input['kitType'],
 		                'Start_Date' => $input['Start_Date'],
 	    	            'End_Date' => $input['End_Date'],
-	    	            'kit_id' => $kit
+	    	            'branch_code' => $input['branch_code'],
+	    	            'kit_id' => $kit,
+	    	            'event_name' => $input['event_name']
                     );
                     return view('bookings.confirm', $booking_data);
                 }
@@ -107,14 +111,15 @@ class BookingsController extends Controller {
         $id_key = DB::table('bookings')->orderBy('id', 'desc')->lists('id');
         $booking = new Booking();
         $booking->kit_user = Auth::User()->id;
-        $booking->branch = Auth::User()->branch;
+        $booking->branch = $input['branch_code'];
         $booking->booking_end = $input['End_Date'];
         $booking->booking_start = $input['Start_Date'];
         $booking->kit_id = $input['kit_id'];
         $booking->id = $id_key[0] + 1;
         $booking->created_at = date("Y-m-d H:i:s", strtotime("now"));
+        $booking->event_name = $input['event_name'];
         $booking->save();
         
-        return view('bookings.landing');
+        return view('bookings.landing', array('booking_id' => ($id_key[0] + 1)));
     }
 }

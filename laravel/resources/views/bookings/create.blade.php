@@ -31,6 +31,13 @@
 							</div>
 					    </div>
 					    
+					    <div class="form-group">
+						    <label class="col-md-1 control-label">Event Name:</label>
+						    <div class="col-md-3">
+						        <input type="text" class="form-control" name="event_name">
+					        </div>
+					    </div>
+					    
 						<div class="form-group">
 						    <label class="col-md-1 control-label">Start Date:</label>
 						    <div class="col-md-3">
@@ -42,6 +49,18 @@
 							<label class="col-md-1 control-label">End Date:</label>
 						    <div class="col-md-3">
 						        <input type="date" class="form-control" name="End_Date">
+					        </div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-md-1 control-label">Branch Code:</label>
+						    <div class="col-md-3">
+						        <select name="branch_code" class="form-control">
+								    <option value='1'>1</option>
+								    <option value='2'>2</option>
+								    <option value='3'>3</option>
+								    <option value='4'>4</option>
+								</select>
 					        </div>
 						</div>
 

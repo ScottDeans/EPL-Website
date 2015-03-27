@@ -23,7 +23,7 @@
 		<div class="container">
 			<div class="content">
 				<div class="title">Edmonton Public Library</div>
-				<div class="quote">Where Knowledge is power</div>
+				<div class="quote">Spread the words</div>
 			</div>
 		</div>
 	    @stop

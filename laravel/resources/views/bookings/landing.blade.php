@@ -8,9 +8,9 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Confirm Booking</div>
+				<div class="panel-heading">Confirmed Booking</div>
 				<div class="panel-body">
-					Your kit has been booked!
+					Your kit has been booked! The booking ID number is: {{ $booking_id }}
 				</div>	
 			</div>
 		</div>

@@ -37,6 +37,13 @@
 					    </div>
 					    
 					    <div class="form-group">
+						    <label class="col-md-1 control-label">Event Name:</label>
+						    <div class="col-md-3">
+						        <input type="text" class="form-control" name="event_name" value={{ $event_name }} readonly>
+					        </div>
+					    </div>
+					    
+					    <div class="form-group">
 						    <label class="col-md-1 control-label">Start Date:</label>
 						    <div class="col-md-3">
 						        <input type="text" class="form-control" name="Start_Date" value={{ $Start_Date }} readonly>
@@ -49,6 +56,13 @@
 						        <input type="text" class="form-control" name="End_Date" value={{ $End_Date }} readonly>
 					        </div>
 						</div>
+						
+						<div class="form-group">
+						    <label class="col-md-1 control-label">Branch Code:</label>
+						    <div class="col-md-3">
+						        <input type="text" class="form-control" name="branch_code" value={{ $branch_code }} readonly>
+					        </div>
+					    </div>
 					    
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
