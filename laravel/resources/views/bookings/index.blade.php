@@ -2,6 +2,7 @@
 
 @extends('app')
 
+
 @section('content') 
 @section('bookingcontent')
 
@@ -61,5 +62,4 @@
         @endif
     @endforeach
 </table>
-
 @stop
