@@ -2,6 +2,7 @@
 
 @extends('app')
 
+
 @section('content') 
 @section('bookingcontent')
 
@@ -64,5 +65,4 @@ Branch Bookings
 @endif
 @endforeach
 </table>
-
 @stop

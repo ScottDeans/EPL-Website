@@ -1,7 +1,7 @@
 @extends('app')
-<html>
-	    <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+	    
         @section('content')
+        <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 		<style>
 			.container {
 				text-align: center;
@@ -27,4 +27,4 @@
 			</div>
 		</div>
 	    @stop
-</html>
+
