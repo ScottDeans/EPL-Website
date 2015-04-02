@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetsTable extends Migration {
+class CreateHolidaysTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,11 @@ class CreateAssetsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('assets', function(Blueprint $table)
+		Schema::create('holidays', function(Blueprint $table)
 		{
 			$table->increments('id');
-			
-			$table->string('asset_tag');
-			$table->string('description');
-			$table->boolean("broken");
+			$table->string("holiday");
+			$table->date("hday_date");
 			$table->timestamps();
 		});
 	}
@@ -30,7 +28,7 @@ class CreateAssetsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('assets');
+		Schema::drop('holidays');
 	}
 
 }
