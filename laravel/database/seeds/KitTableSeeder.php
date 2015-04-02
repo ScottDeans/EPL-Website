@@ -9,7 +9,7 @@ class KitTableSeeder extends Seeder {
         DB::table('kits')->delete();
         
         for($i = 0; $i < 5; $i++){
-            Kit::create(['kit_name' => ''.$i, 'barcode' => decbin($i), 'kit_type' => ($i < 2) ? 'iPad' : 'Laptop', 'kit_description' => 'This is kit '.$i, 'current_location' => rand(1,8)]);
+            Kit::create(['kit_name' => ''.$i, 'barcode' => decbin($i), 'kit_type' => ($i < 2) ? 'iPad' : 'Laptop', 'branch' => rand(1,8)]);
         }
         
     }

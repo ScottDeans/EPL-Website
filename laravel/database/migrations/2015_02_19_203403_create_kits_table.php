@@ -18,8 +18,7 @@ class CreateKitsTable extends Migration {
 			$table->string('kit_name');
 			$table->string('barcode');
 			$table->string('kit_type');
-			$table->string('kit_description');
-			$table->string('current_location');
+			$table->string('branch');
 			$table->timestamps();
 		});
 	}

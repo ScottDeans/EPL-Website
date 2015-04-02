@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetsTable extends Migration {
+class CreateBranchesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,11 @@ class CreateAssetsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('assets', function(Blueprint $table)
+		Schema::create('branches', function(Blueprint $table)
 		{
-			$table->increments('id');
-			
-			$table->string('asset_tag');
-			$table->string('description');
-			$table->boolean("broken");
+			$table->increments('branch');
+			$table->string("branch_code");
+			$table->string("branch_name");
 			$table->timestamps();
 		});
 	}
@@ -30,7 +28,7 @@ class CreateAssetsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('assets');
+		Schema::drop('branches');
 	}
 
 }

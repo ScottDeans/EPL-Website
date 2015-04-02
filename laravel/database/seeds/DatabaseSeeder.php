@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder {
 		Model::unguard();
 		Eloquent::unguard();
 
+        $this->call('BranchTableSeeder');
+        $this->call('HolidayTableSeeder');
+
 		$this->call('UserTableSeeder');
 		$this->call('AssetTableSeeder');
 		$this->call('KitTableSeeder');
