@@ -7,9 +7,9 @@
 		<div class="container-fluid">
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="/kits">ViewKits</a></li>
-                     <li><a href="{!!route('kits.showadd')!!}">AddKits</a></li>
-					<li><a href="/kits">TransferKits</a></li>
+					<li><a href="/kits">View Kits</a></li>
+                     <li><a href="{!!route('kits.showadd')!!}">Add Kits</a></li>
+					<li><a href="{!!route('kits.showaddtype')!!}">Add Kit Type</a></li>
 				</ul>
 	</div>
 		</div>

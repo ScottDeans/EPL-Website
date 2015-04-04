@@ -16,78 +16,83 @@
 				<div class="panel-heading">KitInfo</div>
 				<div class="panel-body">
 				  <div>
-            {!! Form::label('id', 'ID:') !!}
-            {!! Form::label('ID', $kitinfo->id ) !!}
+
             {!! Form::hidden('id', $kitinfo->id) !!}
             </div>
             <div>
-            {!! Form::label('name', 'Name:') !!}
+            {!! Form::label('name', 'Kit Name:') !!}
             {!! Form::label('name', $kitinfo->kit_name ) !!}
             </div>
 
             <div>
-            {!! Form::label('type', 'Type:') !!}
+            {!! Form::label('type', 'Kit Type:') !!}
             {!! Form::label('name', $kitinfo->kit_type) !!}
             </div>
             
             <div>
-            {!! Form::label('location', 'Location:') !!}
-            {!! Form::label('name', $kitinfo->current_location ) !!}
+            {!! Form::label('location', 'Branch:') !!}
+            {!! Form::label('branch', $kitinfo->branch ) !!}
             </div>
             
             <div>
             {!! Form::label('barcode', 'Barcode Number:') !!}
-            {!! Form::label('name', $kitinfo->barcode ) !!}
-         
+            {!! Form::label('barcode', $kitinfo->barcode ) !!}
             </div>
            
             <div>
             {!! Form::label('tags', 'Tags:') !!}
-            {!! Form::label('name1', $kitinfo->id ) !!}
-            
-            </div>
-            
-            <div>
-            {!! Form::label('content', 'Contents:') !!}
-            {!! Form::label('name', $kitinfo->id ) !!}
-            </div>
-            
-            <div>
-            {!! Form::label('description', 'Description:') !!}
-            {!! Form::label('name', $kitinfo->kit_description ) !!}
-            </div>
-
-            
+            <table style="width:30%">
+             <th>Asset</th>
+             <th>Description</th>
+             <th>Condition</th>
+             <th>Change Condition</th>
+            @foreach ($assets as $asset)
+             <tr>
+            <td>{!! $asset->asset_tag !!} </td>
+            <td>{!! $asset->description !!} </td>
+             @if($asset->broken==0)
+                  <td>{!! "Good" !!} </td>
+            @else
+                  <td>{!! "Broken" !!} </td>
+            @endif
+            <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
+                {!! Form::submit('Kit Status') !!}
+                {!! Form::close() !!}</td>	
+            </tr>
+            @endforeach
+             </table>
+            </div>  
             <div>
             {!! Form::label('notes', 'Notes:') !!}
             {!! Form::label('note', $kitnotes->kit_note ) !!}
                
             </div>
-
-            
-
-         <div class="form-group">
-    {!! Form::textarea('text', null, 
-        array('required', 
-              'class'=>'form-control',
-              'placeholder'=>'Insert Note Here.')) !!}
-   
-</div>
-
-<div class="form-group">
-    {!! Form::submit('Submit Note', 
-      array('class'=>'btn btn-primary')) !!}
-</div>
-{!! Form::close() !!}
-<div class="form-group">
-    {!! Form::button('Edit Kit', 
-      array('class'=>'btn btn-primary')) !!}
-</div>
-</div>
-           </div>
-              </div>
+             <div class="form-group">
+            {!! Form::textarea('text', null, 
+                array('required', 
+                    'class'=>'form-control',
+                    'placeholder'=>'Insert Note Here.')) !!}
             </div>
-         </div>
-     </div>
+            <div class="form-group">
+                 {!! Form::submit('Submit Note', 
+                array('class'=>'btn btn-primary')) !!}
+            </div>
+            {!! Form::close() !!}
+
+            <div>
+            <td align="center">{!! Form::open(array('route'=>array('kits.edit',$kitinfo->id),'method'=>'GET')) !!}
+                {!! Form::submit('Edit Kit') !!}
+            {!! Form::close() !!}</td>	
+            </div>
+            <div>
+            <td align="center">{!! Form::open(array('route'=>array('kits.destroy',$kitinfo->id),'method'=>'DELETE')) !!}
+                {!! Form::submit('Delete Kit') !!}
+           {!! Form::close() !!}</td>	
+            </div>
+           </div>
+          </div>
+       </div>
+    </div>
+  </div>
 </div>
 @stop
