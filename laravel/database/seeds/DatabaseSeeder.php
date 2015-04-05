@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder {
 
         $this->call('BranchTableSeeder');
         $this->call('HolidayTableSeeder');
-
+        
+        $this->call('KitTypeTableSeeder');
 		$this->call('UserTableSeeder');
 		$this->call('AssetTableSeeder');
 		$this->call('KitTableSeeder');
