@@ -24,7 +24,7 @@ class KitFormRequest extends Request {
 		return [
 			//
 			    'text' => 'required',
-
+               
 		];
 	}
 

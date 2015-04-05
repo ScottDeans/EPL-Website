@@ -24,7 +24,10 @@ class KitAddEditFormRequest extends Request {
 	{
 		return [
 			//
-				'name' => 'required',
+				'kitname' => 'required',
+				'barcode'=> 'required',
+				'branch' => 'required',
+				'kittype'=> 'required',
 		];
 	}
 
