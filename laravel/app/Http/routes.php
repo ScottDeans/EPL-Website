@@ -55,5 +55,10 @@ Route::group(['middleware'=>'auth'], function() {
     Route::resource('usermgmt', 'AdminController');
 });
 
+Route::group(['middleware'=>'auth'], function() {
+    Route::resource('transfers', 'TransfersController');
+});
+
+
 Route::resource('welcome', 'WelcomeController@index');
 
