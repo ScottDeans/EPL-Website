@@ -14,7 +14,9 @@ class CreateTransfersTable extends Migration {
 	{
 		Schema::create('transfers', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('transfer_id');
+			
+			$table->integer('booking_id');
 			
 			$table->integer('kit_id')->unsigned();
 			$table->foreign('kit_id')
@@ -24,9 +26,9 @@ class CreateTransfersTable extends Migration {
 			
 			$table->string('source');
 			$table->string('destination');
-			$table->string('status');
+			$table->integer('status');
 			
-			$table->integer('shipper')->unsigned();
+			$table->integer('shipper')->unsigned()->nullable();
 			$table->foreign('shipper')
 			      ->references('id')->on('users')
 			      ->onDelete('cascade')
@@ -34,7 +36,7 @@ class CreateTransfersTable extends Migration {
 			      
 			$table->date('shipped_on');
 			      
-			$table->integer('receiver')->unsigned();
+			$table->integer('receiver')->unsigned()->nullable();
 			$table->foreign('receiver')
 			      ->references('id')->on('users')
 			      ->onDelete('cascade')
