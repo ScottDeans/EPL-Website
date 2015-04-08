@@ -6,6 +6,6 @@ class Booking extends Model {
 
 	protected $table = 'bookings';
 	
-	
+	protected $primaryKey = 'booking_id';
 
 }

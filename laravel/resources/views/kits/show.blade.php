@@ -17,7 +17,7 @@
 				<div class="panel-body">
 				  <div>
 
-            {!! Form::hidden('id', $kitinfo->id) !!}
+            {!! Form::hidden('id', $kitinfo->kit_id) !!}
             </div>
             <div>
             {!! Form::label('name', 'Kit Name:') !!}
@@ -80,12 +80,12 @@
             {!! Form::close() !!}
 
             <div>
-            <td align="center">{!! Form::open(array('route'=>array('kits.edit',$kitinfo->id),'method'=>'GET')) !!}
+            <td align="center">{!! Form::open(array('route'=>array('kits.edit',$kitinfo->kit_id),'method'=>'GET')) !!}
                 {!! Form::submit('Edit Kit') !!}
             {!! Form::close() !!}</td>	
             </div>
             <div>
-            <td align="center">{!! Form::open(array('route'=>array('kits.destroy',$kitinfo->id),'method'=>'DELETE')) !!}
+            <td align="center">{!! Form::open(array('route'=>array('kits.destroy',$kitinfo->kit_id),'method'=>'DELETE')) !!}
                 {!! Form::submit('Delete Kit') !!}
            {!! Form::close() !!}</td>	
             </div>

@@ -14,17 +14,17 @@ class CreateKitAssetsTable extends Migration {
 	{
 		Schema::create('kit_assets', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('kit_asset_id');
 			
 			$table->integer('kit_id')->unsigned();
 			$table->foreign('kit_id')
-			      ->references('id')->on('kits')
+			      ->references('kit_id')->on('kits')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			      
 			$table->integer('asset_id')->unsigned()->unique();
 			$table->foreign('asset_id')
-			      -> references('id')->on('assets')
+			      -> references('asset_id')->on('assets')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			      

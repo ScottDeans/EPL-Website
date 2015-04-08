@@ -19,7 +19,7 @@ use View;
 class KitController extends Controller {
     
     public function index () {
-        $kits = DB::table('kits')->select('id','kit_name','kit_type','branch','barcode')->get();
+        $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
  
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
@@ -27,17 +27,17 @@ class KitController extends Controller {
     }
     
     public function show($id) {
-    $id= intval($id);
+        $id= intval($id);
     
-        $kits = DB::table('kits')->where('id', $id)->first();
+        $kits = DB::table('kits')->where('kit_id', $id)->first();
         
-        $assets = DB::table('kit_assets')->where('kit_id', $id)->lists('id');
-        $assetinfo = DB::table('assets')->whereIn('id', $assets)->select('asset_tag','description','broken')->get();  
+        $assets = DB::table('kit_assets')->where('kit_id', $id)->lists('kit_asset_id');
+        $assetinfo = DB::table('assets')->whereIn('asset_id', $assets)->select('asset_tag','description','broken')->get();  
         $kitstypes = DB::table('kits')->distinct()->orderBy('kit_type')->lists('kit_type');
-        $info = DB::table('kits')->where('id', $id)->first(); 
-        $kitassets = DB::table('kit_assets')->where('id', $id)->first();
-        $notes = DB::table('kit_notes')->where('id', $id)->first();
-
+        $info = DB::table('kits')->where('kit_id', $id)->first(); 
+        $kitassets = DB::table('kit_assets')->where('kit_asset_id', $id)->first();
+        $notes = DB::table('kit_notes')->where('kit_note_id', $id)->first();
+        var_dump([$info, $kitassets, $notes, $assetinfo, $kitstypes]);
         return view('kits.show', ['kitinfo' => $info,'kitassets' => $kitassets ,'kitnotes' => $notes,'assets' => $assetinfo,'kittypes'=>$kitstypes]);
     }
      public function create( KitAddEditFormRequest $kitnote)
@@ -48,13 +48,13 @@ class KitController extends Controller {
 	if($user->manager=1){
 	//$auth=Auth::user()->name
     DB::table('kits')
-            ->where('id', $kitnote->id)
+            ->where('kit_id', $kitnote->id)
             ->update(array('kit_name' => $kitnote->kitname,
             'barcode' => $kitnote->barcode,
             'kit_type'=> $kitnote->kittype,
             'branch' => $kitnote->branch));
 	}
-        $kits = DB::table('kits')->select('id','kit_name','kit_type','branch','barcode')->get();
+        $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
  
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
@@ -88,9 +88,9 @@ class KitController extends Controller {
 	 $notes = DB::table('kit_notes')->where('id', $kitnote->id)->first();
 	 $addedtext=$kitnote->text." , ".$notes->kit_note;
 	DB::table('kit_notes')
-            ->where('id',$kitnote->id)
+            ->where('kit_note_id',$kitnote->id)
             ->update(array('kit_note' =>$addedtext ));
-   $kits = DB::table('kits')->select('id', 'kit_description','kit_name','kit_type','current_location','barcode')->get();
+   $kits = DB::table('kits')->select('kit_id', 'kit_description','kit_name','kit_type','current_location','barcode')->get();
    $kits = DB::table('kits')->distinct()->get();
    return view('kits.index',array('kits'=>$kits));
 
@@ -124,7 +124,7 @@ class KitController extends Controller {
 
 
 	}
-        $kits = DB::table('kits')->select('id','kit_name','kit_type','branch','barcode')->get();
+        $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
  
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
@@ -132,10 +132,10 @@ class KitController extends Controller {
 	}
 		public function destroy($kitID)
 	{
-	    DB::table('kits')->where('id', $kitID)->delete();
+	    DB::table('kits')->where('kit_id', $kitID)->delete();
 
         
-        $kits = DB::table('kits')->select('id','kit_name','kit_type','branch','barcode')->get();
+        $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
  
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');

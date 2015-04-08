@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-   <h1>Booking {!! $booking->id !!} </h1>
+   <h1>Booking {!! $booking->booking_id !!} </h1>
    <h2>{!! $booking->booking_start !!} to {!! $booking->booking_end !!} at branch {!! $booking->branch !!}</h2> 
    
    Associated Users:
@@ -15,13 +15,13 @@
         <td>{!! $user->name !!}</td>
         <td>{!! $user->email !!}</td>
         <td>{!! $user->branch !!}</td>
-        <td>{!! Form::open(array('route'=>array('associations.destroy', $booking->id, $user->id), 'method'=>'DELETE')) !!}
+        <td>{!! Form::open(array('route'=>array('associations.destroy', $booking->booking_id, $user->user_id), 'method'=>'DELETE')) !!}
             {!! Form::submit('Remove') !!}
         {!! Form::close() !!}</td>
     </tr>
    @endforeach
    </table>
-   {!! Form::open(array('route'=>array('associations.edit', $booking->id), 'method'=>'GET')) !!}
+   {!! Form::open(array('route'=>array('associations.edit', $booking->booking_id), 'method'=>'GET')) !!}
       {!! Form::submit('+ Add User') !!}
    {!! Form::close() !!}
     

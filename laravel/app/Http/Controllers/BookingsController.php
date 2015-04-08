@@ -40,9 +40,9 @@ class BookingsController extends Controller {
 
         $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
         $branch = $user->branch;//getting the branch that the user belongs to
-        $bookings = DB::table('bookings')->select('id', 'kit_user', 'kit_id', 'event_name', 'branch', 'booking_start', 'booking_end')->get();
-        $assocs = DB::table('associations')->where('associated_user', $user->id)->lists('booking_id');//getting the bookings the user is associated to
-        $assocbookings = DB::table('bookings')->whereIn('id', $assocs)->get();//gets the bookings the associated user is assigned to
+        $bookings = DB::table('bookings')->select('booking_id', 'kit_user', 'kit_id', 'event_name', 'branch', 'booking_start', 'booking_end')->get();
+        $assocs = DB::table('associations')->where('associated_user', $user->user_id)->lists('booking_id');//getting the bookings the user is associated to
+        $assocbookings = DB::table('bookings')->whereIn('booking_id', $assocs)->get();//gets the bookings the associated user is assigned to
         
         return view('bookings.index', array('bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings));
     }
@@ -54,10 +54,10 @@ class BookingsController extends Controller {
     public function show($bookingID) {
     
         $bookingID = intval($bookingID);
-        $booking = DB::table('bookings')->where('id', $bookingID)->first();
+        $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
         
         $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user', $user);
-        $users = DB::table('users')->whereIn('id', $assocs)->get();
+        $users = DB::table('users')->whereIn('booking_id', $assocs)->get();
         
         return view('bookings.show', ['bookings'=> $booking, 'users'=>$users]);
 
@@ -79,7 +79,7 @@ class BookingsController extends Controller {
             return Redirect::to('/bookings/create')->withInput(Input::except('dates'))->withErrors($validator);
         }
         else {
-            $kits = DB::table('kits')->where('kit_type', '=', $input['kitType'])->lists('id');
+            $kits = DB::table('kits')->where('kit_type', '=', $input['kitType'])->lists('kit_id');
             foreach($kits as $kit){
                 $booking_start_dates = DB::table('bookings')->orderBy('booking_start')->where('kit_id', '=', $kit)->lists('booking_start');
                 $booking_end_dates = DB::table('bookings')->orderBy('booking_start')->where('kit_id', '=', $kit)->lists('booking_end');
@@ -118,14 +118,14 @@ class BookingsController extends Controller {
     
     public function store(){
         $input = Request::all();
-        $id_key = DB::table('bookings')->orderBy('id', 'desc')->lists('id');
+        $id_key = DB::table('bookings')->orderBy('booking_id', 'desc')->lists('booking_id');
         $booking = new Booking();
-        $booking->kit_user = Auth::User()->id;
+        $booking->kit_user = Auth::User()->user_id;
         $booking->branch = $input['branch_code'];
         $booking->booking_end = $input['End_Date'];
         $booking->booking_start = $input['Start_Date'];
         $booking->kit_id = $input['kit_id'];
-        $booking->id = $id_key[0] + 1;
+        $booking->booking_id = $id_key[0] + 1;
         $booking->created_at = date("Y-m-d H:i:s", strtotime("now"));
         $booking->event_name = $input['event_name'];
         $booking->save();

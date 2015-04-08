@@ -14,17 +14,17 @@ class CreateBookingsTable extends Migration {
 	{
 		Schema::create('bookings', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('booking_id');
 			
 			$table->integer('kit_user')->unsigned();
 			$table->foreign('kit_user')
-			      ->references('id')->on('users')
+			      ->references('user_id')->on('users')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			     			
 			$table->integer('kit_id')->unsigned();
 			$table->foreign('kit_id')
-			      ->references('id')->on('kits')
+			      ->references('kit_id')->on('kits')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			 

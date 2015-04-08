@@ -1,0 +1,3 @@
+MAILTO=justyn.huculak@gmail.com
+* * * * * /home/jharvard/CMPT395_Project_Hucatog/laravel/php artisan schedule:run
+

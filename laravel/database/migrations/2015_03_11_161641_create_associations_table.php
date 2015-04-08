@@ -14,17 +14,17 @@ class CreateAssociationsTable extends Migration {
 	{
 		Schema::create('associations', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('association_id');
 			
 			$table->integer('booking_id')->unsigned();
 			$table->foreign('booking_id')
-			      ->references('id')->on('bookings')
+			      ->references('booking_id')->on('bookings')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			
 			$table->integer('associated_user')->unsigned();
 			$table->foreign('associated_user')
-			      ->references('id')->on('users')
+			      ->references('user_id')->on('users')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			
