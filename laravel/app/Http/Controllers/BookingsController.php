@@ -13,27 +13,15 @@ use View;
 
 class BookingsController extends Controller {
 
-   // protected $user, $bookings, $associations;
 
     public function index () {
-        /*
-        $user = $this->user->where('name', Auth::User()->name)->first();
-        $branch = $user->branch;
-        $bookings = $this->bookings->select('id', 'kit_user', 'kit_id', 'event_name', 'branch', 'booking_start', 'booking_end')->get();
-        $assocs = $this->associations->where('associated_user', $user->id)->lists('booking_id');
-        $assocsbookings = $this->bookings->whereIn('id', $assocs)->get();
-        */
 
         $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
         $branch = $user->branch;//getting the branch that the user belongs to
-        //$bookings = DB::table('bookings')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->get();
         $bookings = DB::table('kits')->leftJoin('bookings', 'kits.id', '=', 'bookings.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->get();
         $assocs = DB::table('associations')->where('associated_user', $user->id)->lists('booking_id');//getting the bookings the user is associated to
         $assocbookings = DB::table('bookings')->whereIn('users.id', $assocs)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.id')->get();//gets the bookings the associated user is assigned to
-        
-        
-        //var_dump($bookings);
-        //var_dump ($branch);
+
         return view('bookings.index', ['bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings]);
     }
     
