@@ -26,11 +26,15 @@ class BookingsController extends Controller {
 
         $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
         $branch = $user->branch;//getting the branch that the user belongs to
-        $bookings = DB::table('bookings')->select('id', 'kit_user', 'kit_id', 'event_name', 'branch', 'booking_start', 'booking_end')->get();
+        //$bookings = DB::table('bookings')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->get();
+        $bookings = DB::table('kits')->leftJoin('bookings', 'kits.id', '=', 'bookings.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->get();
         $assocs = DB::table('associations')->where('associated_user', $user->id)->lists('booking_id');//getting the bookings the user is associated to
-        $assocbookings = DB::table('bookings')->whereIn('id', $assocs)->get();//gets the bookings the associated user is assigned to
+        $assocbookings = DB::table('bookings')->whereIn('users.id', $assocs)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.id')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.id')->get();//gets the bookings the associated user is assigned to
         
-        return view('bookings.index', array('bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings));
+        
+        //var_dump($bookings);
+        //var_dump ($branch);
+        return view('bookings.index', ['bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings]);
     }
     
     public function create() {
@@ -47,6 +51,26 @@ class BookingsController extends Controller {
 
         return view('bookings.show', ['bookings'=> $booking, 'users'=>$users]);
 
+    }
+    
+    public function edit($bookingID) {
+        $bookingID = intval($bookingID);
+        $booking = DB::table('bookings')->where('id', $bookingID)->first();
+        
+        return view ('bookings.edit', ['bookings' => $booking]);
+    }
+    
+    public function destroy($bookingID) {
+        $bookingID = intval($bookingID);
+        DB::table('bookings')->where('id', $bookingID)->delete();
+        
+        $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
+        $branch = $user->branch;//getting the branch that the user belongs to
+        $bookings = DB::table('bookings')->select('id', 'kit_user', 'kit_id', 'event_name', 'branch', 'booking_start', 'booking_end')->get();
+        $assocs = DB::table('associations')->where('associated_user', $user->id)->lists('booking_id');//getting the bookings the user is associated to
+        $assocbookings = DB::table('bookings')->whereIn('id', $assocs)->get();//gets the bookings the associated user is assigned to
+        
+        return redirect()->back()->withInput(['bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings]);
     }
 
     public function confirm(){
@@ -119,4 +143,5 @@ class BookingsController extends Controller {
         return view('bookings.landing', array('booking_id' => ($id_key[0] + 1)));
 
     }
+    
 }

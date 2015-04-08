@@ -10,7 +10,7 @@
     
     h4 {
         position: relative;
-        left: 550px;
+        left: 350px;
     }
     
     h3 {
@@ -19,6 +19,7 @@
         top: 260px;
         font-size: 15px;
     }
+    
 </style>
 
 
@@ -36,18 +37,32 @@
     </tr>
 
     @foreach ($assocbookings as $assocbookings)
-        @if(count($assocbookings) != 0)
+        @if(count($assocbookings) > 0)
             <tr>
                 <td align="center" class="table_text">{!! $assocbookings->event_name !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->kit_user !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->kit_id !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->branch !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->name !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->kit_type !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->branch_name !!}</td>
                 <td align="center" class="table_text">{!! $assocbookings->booking_start !!}</td>
                 <td align="center" class="table_text">{!! $assocbookings->booking_end !!}</td>
                 <td align="center" class="table_text">
-                    <button> {!! link_to ('bookings/'.$assocbookings->id, 'Detailed View') !!} </button>
-                    <button> {!! link_to ('associations/'.$assocbookings->id, 'Edit Bookings') !!} </button>
-                    <button> {!! link_to ('bookings/'.$assocbookings->id, 'Delete Bookings') !!} </button>
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.show', $assocbookings->id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Detailed View') !!}
+			        {!! Form::close() !!}
+			        </div>
+                    
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.edit', $assocbookings->id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Edit Booking') !!}
+			        {!! Form::close() !!}
+                    </div>
+                    
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.destroy', $assocbookings->id), 'method'=>'DELETE')) !!}
+			        {!! Form::submit('Delete Booking') !!}
+			        {!! Form::close() !!}
+                    </div>
                 </td>
             </tr>
         @else
@@ -62,7 +77,7 @@
 
 <h4><br>Branch Bookings</h4>
 
-<table class="responstable">
+<table class="branch_table">
     <tr>
         <th class="table_text">Event Name</th>
         <th class="table_text">Booking User</th>
@@ -77,15 +92,27 @@
         @if ($bookings->branch == $branch)
         <tr>
             <td align="center" class="table_text">{!! $bookings->event_name !!}</td>
-            <td align="center" class="table_text">{!! $bookings->kit_user !!}</td>
-            <td align="center" class="table_text">{!! $bookings->kit_id !!}</td>
-            <td align="center" class="table_text">{!! $bookings->branch !!}</td>
+            <td align="center" class="table_text">{!! $bookings->name !!}</td>
+            <td align="center" class="table_text">{!! $bookings->kit_type !!}</td>
+            <td align="center" class="table_text">{!! $bookings->branch_name !!}</td>
             <td align="center" class="table_text">{!! $bookings->booking_start !!}</td>
             <td align="center" class="table_text">{!! $bookings->booking_end !!}</td>
             <td align="center" class="table_text">
-                <button> {!! link_to ('bookings/'.$bookings->id, 'Detailed View') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->id, 'Edit Bookings') !!} </button>
-                <button> {!! link_to ('bookings/'.$bookings->id, 'Delete Bookings') !!} </button>
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.show', $bookings->id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Detailed View') !!}
+			        {!! Form::close() !!}
+                </div>
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.edit', $bookings->id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Edit Booking') !!}
+			        {!! Form::close() !!}
+                </div>
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.destroy', $bookings->id), 'method'=>'DELETE')) !!}
+			        {!! Form::submit('Delete Booking') !!}
+			        {!! Form::close() !!}
+                </div>
             </td>
         </tr>
         @endif

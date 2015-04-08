@@ -9,29 +9,57 @@
     }
 </style>
 
-<h1>Users for Booking {!! $bookings->id !!} </h1>
+<button>{!! link_to (URL::previous(), 'Back to Bookings') !!}</button>
 
-<table class="responstable">
-<th align="center">Username</th>
-<th align="center">Email</th>
-<th align="center">Branch</th>
-<th align="center">Kit User?</th>
-@foreach ($users as $user)
-    <tr>
-        <td>{!! $user->name !!} </td>
-        <td>{!! $user->email !!} </td>
-        <td>{!! $user->branch !!} </td>
-        <td>
-            @if ($user->id == $bookings->kit_user)
-                Yes
-            @else 
-                No
-            @endif
-        </td>
-    </tr>
-@endforeach
-</table>
-
-<button class="editbutton">{!! link_to ('associations/'.$bookings->id, 'Edit Associations') !!}</button>
+<div class="container-fluid">
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<div class="panel panel-default">
+			<div class="panel-heading">Booking {!! $bookings->id !!} info</div>
+			    <div class="panel-body">
+			    <div>
+			    {!! Form::label('name', 'Event Name: ') !!}
+			    {!! Form::label('name', $bookings->event_name) !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('location', 'Location: ') !!}
+			    {!!Form::label('location', $bookings->branch) !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('kit', 'Kit Used: ') !!}
+			    {!!Form::label('kit', $bookings->kit_id) !!}
+			    {!! Form::open(array('route'=>array('kits.show',$bookings->kit_id),'method'=>'GET')) !!}
+                {!! Form::submit('View Kit') !!}
+                {!! Form::close() !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('start', 'Start Date: ') !!}
+			    {!!Form::label('start', $bookings->booking_start) !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('end', 'End Date: ') !!}
+			    {!!Form::label('end', $bookings->booking_end) !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('booker', 'Booked By: ') !!}
+			    {!!Form::label('booker', $bookings->kit_user) !!}
+			    </div>
+			    
+			    <div>
+			    {!!Form::label('users', 'Users Associated With the Booking: ') !!}
+			    @foreach ($users as $user)
+			        <br>{!! Form::label('user', $user->name) !!}
+			    @endforeach
+			    </div>
+			</div>
+	    </div>
+	</div>
+</div>
+</div>
 
 @stop
