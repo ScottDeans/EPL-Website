@@ -54,10 +54,10 @@ class AssociationsController extends Controller {
     
     public function show($bookingID){
         $bookingID = intval($bookingID);
-        $booking = DB::table('bookings')->where('id', $bookingID)->first();
+        $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
         
         $assocs = DB::table('associations')->where('booking_id',$bookingID)->lists('associated_user');
-        $users = DB::table('users')->whereIn('id', $assocs)->get();
+        $users = DB::table('users')->whereIn('user_id', $assocs)->get();
         
         
         return view('associations.show', ['booking' => $booking, 'users' => $users]);
@@ -72,10 +72,10 @@ class AssociationsController extends Controller {
 	public function edit($id)
 	{
 	    $bookingID = intval($id);
-	    $booking = DB::table('bookings')->where('id', $bookingID)->first();
+	    $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
 	    
 	    $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user');
-	    $users = DB::table('users')->whereNotIn('id', $assocs)->get();
+	    $users = DB::table('users')->whereNotIn('user_id', $assocs)->get();
 	    
 		return view('associations.edit', ['booking' => $booking, 'users' => $users]);
 	}
@@ -100,9 +100,9 @@ class AssociationsController extends Controller {
 	 */
 	public function destroy($bookingID, $userID)
 	{
-	    $booking = DB::table('bookings')->where('id', $bookingID)->first();
-	    DB::table('associations')->where('booking_id', $booking->id)->where('associated_user', $userID)->delete();
-	    $users = DB::table('users')->whereIn('id', DB::table('associations')->where('booking_id', $booking->id)->lists('associated_user'))->get();
+	    $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
+	    DB::table('associations')->where('booking_id', $booking->booking_id)->where('associated_user', $userID)->delete();
+	    $users = DB::table('users')->whereIn('user_id', DB::table('associations')->where('booking_id', $booking->booking_id)->lists('associated_user'))->get();
 	    return redirect()->back()->withInput(['booking'=>$booking, 'users'=>$users]);
 	}
 	

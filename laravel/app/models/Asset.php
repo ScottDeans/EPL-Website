@@ -4,6 +4,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asset extends Model {
 
-	//
+	protected $primaryKey = 'asset_id';
 
 }

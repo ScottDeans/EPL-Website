@@ -10,7 +10,7 @@ class TransfersController extends Controller {
     public function index() {
         $userBranch = Auth::User()->branch;
         TransfersController::dailyRun();
-        $incoming = DB::table('transfers')->where('destination', '=', $userBranch)->where('status', '=', 1)->leftJoin('users', 'transfers.shipper', '=', 'users.id')->get();
+        $incoming = DB::table('transfers')->where('destination', '=', $userBranch)->where('status', '=', 1)->get();
         $outgoing = DB::table('transfers')->where('source', '=', $userBranch)->where('status', '=', 0)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')->get();
         return view('transfers.index',['incoming'=>$incoming, 'outgoing'=>$outgoing]);
     }
@@ -25,7 +25,7 @@ class TransfersController extends Controller {
     
     public function update($transferID){
         $transfer = Transfer::Find($transferID);
-        $transfer->update(['shipper'=>Auth::User()->id, 'shipped_on'=>date('Y-m-d'), 'status'=>1]);
+        $transfer->update(['status'=>1]);
        
         return redirect('transfers/');
     }
@@ -49,11 +49,11 @@ class TransfersController extends Controller {
         $upcoming = DB::table('bookings')->whereBetween('booking_start', [$now, $in4days])->get();
         foreach ($upcoming as $booking) {
             $kit = $booking->kit_id;    // The kit this booking is using
-            $existing = DB::table('bookings')->whereBetween('booking_end', [$now, $booking->booking_start])->where('kit_id', '=', $kit)->where('id', '!=', $booking->id)->orderBy('booking_end')->get();    // A list of in-progress bookings that use the kit.
-            $source = DB::table('kits')->where('id', '=', $kit)->pluck('branch');
-            if (sizeof($existing) == 0 && !in_array($booking->id, $existingTransfers) && $source != $booking->branch){
+            $existing = DB::table('bookings')->whereBetween('booking_end', [$now, $booking->booking_start])->where('kit_id', '=', $kit)->where('booking_id', '!=', $booking->booking_id)->orderBy('booking_end')->get();    // A list of in-progress bookings that use the kit.
+            $source = DB::table('kits')->where('kit_id', '=', $kit)->pluck('branch');
+            if (sizeof($existing) == 0 && !in_array($booking->booking_id, $existingTransfers) && $source != $booking->branch){
                 
-                Transfer::create(['booking_id'=>$booking->id, 'kit_id'=>$kit, 'source'=>$source, 'destination'=>$booking->branch, 'status'=>'Idle']);
+                Transfer::create(['booking_id'=>$booking->booking_id, 'kit_id'=>$kit, 'source'=>$source, 'destination'=>$booking->branch, 'status'=>0]);
             }        
         }
     }

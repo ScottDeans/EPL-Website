@@ -13,7 +13,7 @@
         <td>{!! $asset->asset_tag !!}</td>
         <td>{!! $asset->description !!}</td>
         <td>{!! $asset->broken !!}</td>
-        <td>{!! Form::open(array('route'=>array('kitassociations.store', $kit->id, $asset->id), 'method'=>'POST')) !!}
+        <td>{!! Form::open(array('route'=>array('kitassociations.store', $kit->kit_id, $asset->asset_id), 'method'=>'POST')) !!}
            {!! Form::submit('Add asset to: '.$kit->kit_name) !!}
         {!! Form::close() !!}</td>
     </tr>

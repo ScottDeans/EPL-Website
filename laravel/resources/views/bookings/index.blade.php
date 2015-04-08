@@ -25,9 +25,9 @@
         <td align="center">{!! $assocbookings->booking_start !!}</td>
         <td align="center">{!! $assocbookings->booking_end !!}</td>
         <td align="center">
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Detailed View') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Edit Bookings') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->id, 'Delete Bookings') !!} </button>
+            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Detailed View') !!} </button>
+            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Edit Bookings') !!} </button>
+            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Delete Bookings') !!} </button>
         </td>
     </tr>
     @endforeach
@@ -54,9 +54,9 @@
             <td align="center">{!! $bookings->booking_start !!}</td>
             <td align="center">{!! $bookings->booking_end !!}</td>
             <td align="center">
-                <button> {!! link_to ('associations/'.$bookings->id, 'Detailed View') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->id, 'Edit Bookings') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->id, 'Delete Bookings') !!} </button>
+                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Detailed View') !!} </button>
+                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Edit Bookings') !!} </button>
+                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Delete Bookings') !!} </button>
             </td>
         </tr>
         @endif

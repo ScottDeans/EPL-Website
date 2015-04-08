@@ -14,7 +14,7 @@ class CreateKitTypesTable extends Migration {
 	{
 		Schema::create('kit_types', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('kit_type_id');
 			$table->string('kit_type');
 			$table->timestamps();
 		});

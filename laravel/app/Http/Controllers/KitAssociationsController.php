@@ -52,9 +52,9 @@ class KitAssociationsController extends Controller {
 	$kitasset->save();*/
 	
 	$kitasset=DB::table('kit_assets')->get();
-	$kits = DB::table('kits')->where('id', $kitID)->first();
-    $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('id');
-    $assetinfo = DB::table('assets')->whereIn('id', $assets)->select('id','asset_tag','description','broken')->get();
+	$kits = DB::table('kits')->where('kit_id', $kitID)->first();
+    $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('asset_id');
+    $assetinfo = DB::table('assets')->whereIn('asset_id', $assets)->select('asset_id','asset_tag','description','broken')->get();
 	return view('kitassociations.show', [ 'assets' => $assetinfo, 'kitID' =>  $kits]);
 	}
 
@@ -67,10 +67,10 @@ class KitAssociationsController extends Controller {
     
     public function show($kitID){
         $kitID = intval($kitID);
-        $kits = DB::table('kits')->where('id', $kitID)->first();
+        $kits = DB::table('kits')->where('kit_id', $kitID)->first();
         
-        $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('id');
-        $assetinfo = DB::table('assets')->whereIn('id', $assets)->select('id','asset_tag','description','broken')->get();
+        $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('asset_id');
+        $assetinfo = DB::table('assets')->whereIn('asset_id', $assets)->select('asset_id','asset_tag','description','broken')->get();
         
         return view('kitassociations.show', [ 'assets' => $assetinfo, 'kitID' =>  $kits]);
 
@@ -85,9 +85,9 @@ class KitAssociationsController extends Controller {
 	public function edit($id)
 	{
 	    $kitID = intval($id);
-	    $kit= DB::table('kits')->where('id', $kitID)->first();
-	    $kitassets= DB::table('kit_assets')->lists('id');
-	    $users = DB::table('assets')->whereNotIn('id', $kitassets)->select('id','asset_tag','description','broken')->get();
+	    $kit= DB::table('kits')->where('kit_id', $kitID)->first();
+	    $kitassets= DB::table('kit_assets')->lists('asset_id');
+	    $users = DB::table('assets')->whereNotIn('asset_id', $kitassets)->select('asset_id','asset_tag','description','broken')->get();
 
 		return view('kitassociations.edit', ['kit' => $kit, 'users' => $users]);
 		
@@ -114,12 +114,12 @@ class KitAssociationsController extends Controller {
 	 */
 	public function destroy($assetID, $kitID)
 	{
-	    $kit = DB::table('kits')->where('id', $kitID)->first();
-	    DB::table('kit_assets')->where('kit_id', $kit->id)->where('id', $assetID)->delete();
-	    $kits = DB::table('kits')->where('id', $kitID)->first();
+	    $kit = DB::table('kits')->where('kit_id', $kitID)->first();
+	    DB::table('kit_assets')->where('kit_id', $kit->kit_id)->where('asset_id', $assetID)->delete();
+	    $kits = DB::table('kits')->where('kit_id', $kitID)->first();
         
-        $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('id');
-        $assetinfo = DB::table('assets')->whereIn('id', $assets)->select('id','asset_tag','description','broken')->get();
+        $assets = DB::table('kit_assets')->where('kit_id', $kitID)->lists('kit_asset_id');
+        $assetinfo = DB::table('assets')->whereIn('asset_id', $assets)->select('asset_id','asset_tag','description','broken')->get();
         
         return view('kitassociations.show', [ 'assets' => $assetinfo, 'kitID' =>  $kits]);
 	}

@@ -14,11 +14,11 @@ class CreateKitNotes extends Migration {
 	{
 		Schema::create('kit_notes', function(Blueprint $table)
 		{
-			$table->increments('id');
+			$table->increments('kit_note_id');
 			
 			$table->integer('kit_id')->unsigned();
 			$table->foreign('kit_id')
-			      ->references('id')->on('kits')
+			      ->references('kit_id')->on('kits')
 			      ->onDelete('cascade')
 			      ->onUpdate('cascade');
 			
