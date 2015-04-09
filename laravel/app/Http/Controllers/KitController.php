@@ -2,6 +2,7 @@
 
 
 use App\Kit;
+use App\KitNote;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +16,12 @@ use App\Booking;
 use Validator;
 use Input;
 use View;
+
+use Mail;
+
+
 use App\KitType;
+
 class KitController extends Controller {
     
     public function index () {
@@ -33,13 +39,13 @@ class KitController extends Controller {
         
 
         $assets = DB::table('kit_assets')->where('kit_id', $id)->lists('asset_id');
+        
         $assetinfo = DB::table('assets')->whereIn('asset_id', $assets)->select('asset_tag','description','broken')->get();  
 
         $kitstypes = DB::table('kits')->distinct()->orderBy('kit_type')->lists('kit_type');
         $info = DB::table('kits')->where('kit_id', $id)->first(); 
         $kitassets = DB::table('kit_assets')->where('kit_asset_id', $id)->first();
-        $notes = DB::table('kit_notes')->where('kit_note_id', $id)->first();
-
+        $notes = DB::table('kit_notes')->where('kit_id', $id)->first();
         return view('kits.show', ['kitinfo' => $info,'kitassets' => $kitassets ,'kitnotes' => $notes,'assets' => $assetinfo,'kittypes'=>$kitstypes]);
     }
      public function create( KitAddEditFormRequest $kitnote)
@@ -69,7 +75,31 @@ class KitController extends Controller {
             ->where('asset_tag', $asset->asset_tag)
             ->update(array('broken' =>!$asset->broken ));
 
+
+    if(!$asset->broken){
+        $assetIDinTable = DB::table('assets')->where('asset_tag', '=', $assetid)->pluck('asset_id');
+        $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
+        var_dump($kit);
+        $status = in_array($kit->kit_id, DB::table('transfers')->lists('kit_id')) && DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->pluck('status');
+        $description = $asset->description;
+        $destination = $status ? DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')
+        ->pluck('branch_code') : null;
+        
+        $data = ['name' => Auth::User()->name, 'user_branch' => DB::table('branches')->where('branch', '=', Auth::User()->branch)->pluck('branch_code'),
+                 'asset_tag' => $assetid, 'description' => $description, 'barcode' => $kit->barcode, 'branch_code' => $destination, 'status' => $status];
+        var_dump($data);
+        $admins = DB::table('users')->where('admin', '=', true)->lists('email');
+        
+        foreach ($admins as $admin){
+            Mail::send('emails.brokenAsset', ['key' => $data], function($message) use($admin, $data){
+                $message->to($admin)->subject("Asset ".$data['asset_tag']." broken.");
+            });
+        }
+    }
+	return redirect()->back();
+
 	    return redirect()->back();
+
 	}
     public function store($bookingID, $userID)
 	{
@@ -81,7 +111,7 @@ class KitController extends Controller {
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
 	    if(!$users->manager){
 	        $kits = DB::table('kits')->distinct()->get();
-            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an admin.'));
+            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not a manager.'));
 	    }
 	    $kitstypes = DB::table('kit_types')->distinct()->orderBy('kit_type')->lists('kit_type');
 	    $branches = DB::table('branches')->distinct()->orderBy('branch_name')->lists('branch_name');
@@ -107,7 +137,7 @@ class KitController extends Controller {
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
 	    if(!$users->manager){
 	        $kits = DB::table('kits')->distinct()->get();
-            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an admin.'));
+            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not a manager.'));
 	    }
 	    $kitstypes = DB::table('kit_types')->distinct()->orderBy('kit_type')->lists('kit_type');
 	    $branches = DB::table('branches')->distinct()->orderBy('branch_name')->lists('branch_name');
@@ -122,7 +152,7 @@ class KitController extends Controller {
 	    $users = DB::table('users')->where('name', Auth::User()->name)->first();
 	    if(!$users->manager){
 	        $kits = DB::table('kits')->distinct()->get();
-            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an admin.'));
+            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an manager.'));
 	    }
 	    return view('kits.addkittype');
 	}
@@ -145,7 +175,7 @@ class KitController extends Controller {
 	    $branches = DB::table('branches')->distinct()->orderBy('branch_name')->lists('branch_name');
         $kitstypes = DB::table('kit_types')->distinct()->orderBy('kit_type')->lists('kit_type');
     
-
+        
 	
 	    $kitasset= new Kit();
 	    $kitasset->kit_name = $kitnote->kitname;
@@ -153,7 +183,15 @@ class KitController extends Controller {
 	    $kitasset->kit_type= $kitstypes[$kitnote->kittype];
 	    $kitasset->branch = $branches[$kitnote->branch];
 	    $kitasset->save();
+	    
+	    $kitID = DB::table('kits')->orderBy('created_at', 'desc')->first();
+	
+        $kitnote = new KitNote();
+        $kitnote->kit_id = $kitID->kit_id;
+        $kitnote->kit_note = '';
+        $kitnote->save();
 
+      
         $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
         $kits = DB::table('kits')->distinct()->get();
  
@@ -165,7 +203,7 @@ class KitController extends Controller {
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
 	    if(!$users->manager){
 	        $kits = DB::table('kits')->distinct()->get();
-            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an admin.'));
+            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an manager.'));
 	    }
 	    DB::table('kits')->where('kit_id', $kitID)->delete();
 
@@ -175,4 +213,5 @@ class KitController extends Controller {
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
 	}
 }
+
 

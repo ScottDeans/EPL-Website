@@ -3,8 +3,13 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Association;
+use App\User;
+use App\Booking;
+use App\Branch;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Mail;
 
 class AssociationsController extends Controller {
 
@@ -39,8 +44,17 @@ class AssociationsController extends Controller {
 	    $newAssoc = new Association();
 	    $newAssoc->booking_id = $bookingID;
 	    $newAssoc->associated_user = $userID;
-	    
 	    $newAssoc->save();
+	    
+	    $booking = Booking::Find($bookingID);
+	    $associate = User::Find($userID);
+	    $branch = Branch::Find($booking->branch);
+	    
+	    $emailData = [$associate->name, Auth::User()->name, $booking->event_name, $branch->branch_code.' ('.$branch->branch_name.')', $booking->booking_start, $booking->booking_end];
+	    
+	    Mail::send('emails.associateWithBooking', ['key' => $emailData], function($message) use ($associate){
+	        $message->to($associate->email)->subject("You've been added to a booking!");
+	    });
 		
 		return redirect()->action('AssociationsController@show', [$bookingID]);
 	}

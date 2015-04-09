@@ -1,0 +1,1 @@
+Hi, {!! $key[0] !!}! You're receiving this email because {!! $key[1] !!} has added you to their event, {!! $key[2] !!} at {!! $key[3] !!} from {!! $key[4] !!} to {!! $key[5] !!}. For more details, please visit your 'Bookings' page.
