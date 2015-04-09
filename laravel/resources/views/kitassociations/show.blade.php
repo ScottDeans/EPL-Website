@@ -11,7 +11,7 @@
             <tr>
             <td>{!! $asset->asset_tag !!} </td>
             <td>{!! $asset->description !!} </td>
-            <td>{!! Form::open(array('route'=>array('kitassociations.destroy', $asset->id, $kitID->id), 'method'=>'DELETE')) !!}
+            <td>{!! Form::open(array('route'=>array('kitassociations.destroy', $asset->asset_id, $kitID->kit_id), 'method'=>'DELETE')) !!}
                     {!! Form::submit('Remove') !!}
                 {!! Form::close() !!}</td>
      </tr>

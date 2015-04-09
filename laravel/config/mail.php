@@ -15,7 +15,7 @@ return [
 	|
 	*/
 
-	'driver' => 'smtp',
+	'driver' => 'log',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => null, 'name' => null],
+	'from' => ['address' => 'EPLKitManagement@bar.com', 'name' => 'Edmonton Public Library Kit Management System'],
 
 	/*
 	|--------------------------------------------------------------------------
