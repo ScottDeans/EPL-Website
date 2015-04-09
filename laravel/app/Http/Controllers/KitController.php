@@ -15,6 +15,7 @@ use App\Booking;
 use Validator;
 use Input;
 use View;
+use Mail;
 
 class KitController extends Controller {
     
@@ -37,7 +38,6 @@ class KitController extends Controller {
         $info = DB::table('kits')->where('kit_id', $id)->first(); 
         $kitassets = DB::table('kit_assets')->where('kit_asset_id', $id)->first();
         $notes = DB::table('kit_notes')->where('kit_note_id', $id)->first();
-        var_dump([$info, $kitassets, $notes, $assetinfo, $kitstypes]);
         return view('kits.show', ['kitinfo' => $info,'kitassets' => $kitassets ,'kitnotes' => $notes,'assets' => $assetinfo,'kittypes'=>$kitstypes]);
     }
      public function create( KitAddEditFormRequest $kitnote)
@@ -68,7 +68,26 @@ class KitController extends Controller {
             ->where('asset_tag', $asset->asset_tag)
             ->update(array('broken' =>!$asset->broken ));
 
-		return redirect()->back();
+    if(!$asset->broken){
+        $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetid)->pluck('kit_id'))->first();
+        $status = in_array($kit->kit_id, DB::table('transfers')->lists('kit_id')) && DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->pluck('status');
+        $description = $asset->description;
+        $destination = $status ? DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')
+        ->pluck('branch_code') : null;
+        
+        $data = ['name' => Auth::User()->name, 'user_branch' => DB::table('branches')->where('branch', '=', Auth::User()->branch)->pluck('branch_code'),
+                 'asset_tag' => $assetid, 'description' => $description, 'barcode' => $kit->barcode, 'branch_code' => $destination, 'status' => $status];
+        var_dump($data);
+        $admins = DB::table('users')->where('admin', '=', true)->lists('email');
+        
+        foreach ($admins as $admin){
+            Mail::send('emails.brokenAsset', ['key' => $data], function($message) use($admin, $data){
+                $message->to($admin)->subject("Asset ".$data['asset_tag']." broken.");
+            });
+        }
+        var_dump('Wrote to log');
+    }
+	return redirect()->back();
 	}
     public function store($bookingID, $userID)
 	{
