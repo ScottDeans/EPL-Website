@@ -37,54 +37,53 @@
             </div>
            
             <div>
-            {!! Form::label('tags', 'Tags:') !!}
-            <table style="width:30%">
+            <table style="width:70%">
              <th>Asset</th>
              <th>Description</th>
              <th>Condition</th>
-             <th>Change Condition</th>
+            
             @foreach ($assets as $asset)
              <tr>
             <td>{!! $asset->asset_tag !!} </td>
             <td>{!! $asset->description !!} </td>
              @if($asset->broken==0)
                   <td>{!! "Good" !!} </td>
-            @else
-                  <td>{!! "Broken" !!} </td>
-            @endif
-            <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
-                {!! Form::submit('Kit Status') !!}
+                             <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
+                {!! Form::submit('Report Broken') !!}
                 {!! Form::close() !!}</td>	
             </tr>
+            @else
+                  <td>{!! "Broken" !!} </td>
+           
+            <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
+                {!! Form::submit('Report Fixed') !!}
+                {!! Form::close() !!}</td>	
+            </tr>
+             @endif
             @endforeach
              </table>
             </div>  
-            <div>
-            {!! Form::label('notes', 'Notes:') !!}
-            {!! Form::label('note', $kitnotes->kit_note ) !!}
-               
-            </div>
+
              <div class="form-group">
-            {!! Form::textarea('text', null, 
+            {!! Form::textarea('text',$kitnotes->kit_note, 
                 array('required', 
-                    'class'=>'form-control',
-                    'placeholder'=>'Insert Note Here.')) !!}
+                    'class'=>'form-control')) !!}
             </div>
             <div class="form-group">
-                 {!! Form::submit('Submit Note', 
+                 {!! Form::submit('Confirm', 
                 array('class'=>'btn btn-primary')) !!}
-            </div>
+           
             {!! Form::close() !!}
-
-            <div>
-            <td align="center">{!! Form::open(array('route'=>array('kits.edit',$kitinfo->kit_id),'method'=>'GET')) !!}
-                {!! Form::submit('Edit Kit') !!}
-            {!! Form::close() !!}</td>	
-            </div>
-            <div>
-            <td align="center">{!! Form::open(array('route'=>array('kits.destroy',$kitinfo->kit_id),'method'=>'DELETE')) !!}
-                {!! Form::submit('Delete Kit') !!}
-           {!! Form::close() !!}</td>	
+            </div>	
+          <div class="form-group">
+            {!! Form::open(array('route'=>array('kits.edit',$kitinfo->kit_id),'method'=>'GET')) !!}
+                {!! Form::submit('Edit Kit',array('class'=>'btn btn-primary')) !!}
+            {!! Form::close() !!}</div>	
+             <div class="form-group">       
+           {!! Form::open(array('route'=>array('kits.destroy',$kitinfo->kit_id),'method'=>'DELETE')) !!}
+                {!! Form::submit('Delete Kit',array('class'=>'btn btn-delete')) !!}
+           {!! Form::close() !!}</div>	
+      	
             </div>
            </div>
           </div>

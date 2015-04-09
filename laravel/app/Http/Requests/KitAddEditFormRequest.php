@@ -12,6 +12,8 @@ class KitAddEditFormRequest extends Request {
 	 */
 	public function authorize()
 	{
+	
+	
 		return true;
 	}
 
@@ -25,7 +27,7 @@ class KitAddEditFormRequest extends Request {
 		return [
 			//
 				'kitname' => 'required',
-				'barcode'=> 'required',
+				'barcode'=> 'required|min:9|max:9',
 				'branch' => 'required',
 				'kittype'=> 'required',
 		];
