@@ -67,7 +67,9 @@
              </table>
             </div>  
 
+
              <div class="form-group">
+
             {!! Form::textarea('text',$kitnotes->kit_note, 
                 array('required', 
                     'class'=>'form-control')) !!}

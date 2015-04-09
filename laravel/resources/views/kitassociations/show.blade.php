@@ -4,6 +4,10 @@
 <div>
  
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> create kitnote tables in DB, Fixes db problems
 
   <div class="container-fluid">
    	<div class="row">
@@ -45,6 +49,7 @@
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 =======
 {!! Form::label('tags', 'Tags:') !!}
      <table style="width:30%">
@@ -67,3 +72,6 @@
    @stop
      
 >>>>>>> Adds email notifications to several events. Revamps seeders to generate presentable data.
+=======
+
+>>>>>>> create kitnote tables in DB, Fixes db problems
