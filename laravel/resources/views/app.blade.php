@@ -2,7 +2,9 @@
 <html>
     <head>
         <title>@yield('title') - EPL Kit Tracking System</title>
-    
+    	<!-- Scripts -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/css/app.css" type="text/css"/>
         <div class="quote">Edmonton Public Library</div>
     </head>

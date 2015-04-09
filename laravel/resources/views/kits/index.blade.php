@@ -7,38 +7,46 @@
 @section('content')
 @section('kitcontent')
 
-
-        
-      <table class="responstable"> 
-   
-<tr>
-<th>kit_name</th>
-<th>kit_type</th>
-<th>barcode</th>
-<th>branch</th>
-<th>More Details</th>
-</tr>
-
-  <tr>
-  
-@foreach ($kits as $value) 
-<tr>
-  <td align="center">  {!! $value->kit_name!!} </td>
-  <td align="center">   {!! $value->kit_type  !!} </td>
-  <td align="center">  {!! $value->barcode!!} </td>
-  <td align="center">  {!! $value->branch  !!} </td>
-          <td align="center">{!! Form::open(array('route'=>array('kits.show',$value->kit_id),'method'=>'GET')) !!}
-         {!! Form::submit('View Kit') !!}
-           {!! Form::close() !!}	
-   </tr>
-@endforeach
- </tr>
-
-</table>
-           
-         
-          @stop
-@stop
-
+@if($errors->any())
+<h4>{{$errors->first()}}</h4>
+@endif
+  <div class="container-fluid">
+   	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">All Kits</div>
+				    <div class="panel-body">        
+                        <table class="responstable"> 
+                        <table style="width:90%">
+                            <tr>
+                            <th>kit_name</th>
+                            <th>kit_type</th>
+                            <th>barcode</th>
+                            <th>branch</th>
+                            <th>More Details</th>
+                            </tr>
+                            <tr>
+                            @foreach ($kits as $value) 
+                                <tr>
+                                <td align="center">  {!! $value->kit_name!!} </td>
+                                <td align="center">   {!! $value->kit_type  !!} </td>
+                                <td align="center">  {!! $value->barcode!!} </td>
+                                <td align="center">  {!! $value->branch  !!} </td>
+                                <td align="center">{!! Form::open(array('route'=>array('kits.show',$value->kit_id),'method'=>'GET')) !!}
+                                {!! Form::submit('View Kit') !!}
+                                {!! Form::close() !!}	
+                                 </tr>
+                            @endforeach
+                            </tr>
+                            </table>
+                             @stop
+                            @stop
+                </div>
+            </div>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
 
 

@@ -23,7 +23,9 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
+
 	    $schedule->call('TransfersController@dailyRun')->dailyAt('06:00');
+
 	}
 
 }
