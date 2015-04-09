@@ -6,57 +6,113 @@
 @section('content') 
 @section('bookingcontent')
 
-<p> 
-<br><h2>Your Bookings</h2></br>
-</p>
-<table class="responstable">
+<style>
+    
+    h4 {
+        position: relative;
+        left: 350px;
+    }
+    
+    h3 {
+        position: absolute;
+        left: 350px;
+        top: 260px;
+        font-size: 15px;
+    }
+    
+</style>
+
+
+<h4>Your Bookings</h4>
+
+<table>
     <tr>
-        <th>Event Name</th>
-        <th>Kit Type</th>
-        <th>Booking Start Date</th>
-        <th>Booking End Date</th>
+        <th class="table_text">Event Name</th>
+        <th class="table_text">Booking User</th>
+        <th class="table_text">Kit Type</th>
+        <th class="table_text">Branch</th>
+        <th class="table_text">Booking Start Date</th>
+        <th class="table_text">Booking End Date</th>
         <th> </th>
     </tr>
 
     @foreach ($assocbookings as $assocbookings)
-    <tr>
-        <td align="center">{!! $assocbookings->event_name !!}</td>
-        <td align="center">{!! $assocbookings->kit_id !!}</td>
-        <td align="center">{!! $assocbookings->booking_start !!}</td>
-        <td align="center">{!! $assocbookings->booking_end !!}</td>
-        <td align="center">
-            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Detailed View') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Edit Bookings') !!} </button>
-            <button> {!! link_to ('associations/'.$assocbookings->booking_id, 'Delete Bookings') !!} </button>
-        </td>
-    </tr>
+        @if(count($assocbookings) > 0)
+            <tr>
+                <td align="center" class="table_text">{!! $assocbookings->event_name !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->name !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->kit_type !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->branch_code !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->booking_start !!}</td>
+                <td align="center" class="table_text">{!! $assocbookings->booking_end !!}</td>
+                <td align="center" class="table_text">
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.show', $assocbookings->booking_id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Detailed View') !!}
+			        {!! Form::close() !!}
+			        </div>
+                    
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.edit', $assocbookings->booking_id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Edit Booking') !!}
+			        {!! Form::close() !!}
+                    </div>
+                    
+                    <div>
+                    {!! Form::open(array('route'=>array('bookings.destroy', $assocbookings->booking_id), 'method'=>'DELETE')) !!}
+			        {!! Form::submit('Delete Booking') !!}
+			        {!! Form::close() !!}
+                    </div>
+                </td>
+            </tr>
+        @else
+            <tr>
+                <td>You have no bookings</td>
+            </tr>
+        @endif
     @endforeach
 </table>
 
-<p>
-    <br><h2>Branch Bookings</h2></br>
-</p>
+<br></br>
 
-<table class="responstable">
+<h4><br>Branch Bookings</h4>
+
+<table class="branch_table">
     <tr>
-    <th>Event Name</th>
-    <th>Kit Type</th>
-    <th>Booking Start Date</th>
-    <th>Booking End Date</th>
-    <th> </th>
+        <th class="table_text">Event Name</th>
+        <th class="table_text">Booking User</th>
+        <th class="table_text">Kit Type</th>
+        <th class="table_text">Branch</th>
+        <th class="table_text">Booking Start Date</th>
+        <th class="table_text">Booking End Date</th>
+        <th> </th>
     </tr>
 
     @foreach ($bookings as $bookings)
         @if ($bookings->branch == $branch)
         <tr>
-            <td align="center">{!! $bookings->event_name !!}</td>
-            <td align="center">{!! $bookings->kit_id !!}</td>
-            <td align="center">{!! $bookings->booking_start !!}</td>
-            <td align="center">{!! $bookings->booking_end !!}</td>
-            <td align="center">
-                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Detailed View') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Edit Bookings') !!} </button>
-                <button> {!! link_to ('associations/'.$bookings->booking_id, 'Delete Bookings') !!} </button>
+            <td align="center" class="table_text">{!! $bookings->event_name !!}</td>
+            <td align="center" class="table_text">{!! $bookings->name !!}</td>
+            <td align="center" class="table_text">{!! $bookings->kit_type !!}</td>
+            <td align="center" class="table_text">{!! $bookings->branch_code !!}</td>
+            <td align="center" class="table_text">{!! $bookings->booking_start !!}</td>
+            <td align="center" class="table_text">{!! $bookings->booking_end !!}</td>
+            <td align="center" class="table_text">
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.show', $bookings->booking_id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Detailed View') !!}
+			        {!! Form::close() !!}
+                </div>
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.edit', $bookings->booking_id), 'method'=>'GET')) !!}
+			        {!! Form::submit('Edit Booking') !!}
+			        {!! Form::close() !!}
+                </div>
+                <div>
+                    {!! Form::open(array('route'=>array('bookings.destroy', $bookings->booking_id), 'method'=>'DELETE')) !!}
+			        {!! Form::submit('Delete Booking') !!}
+			        {!! Form::close() !!}
+                </div>
             </td>
         </tr>
         @endif
