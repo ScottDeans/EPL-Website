@@ -77,13 +77,13 @@ class KitController extends Controller {
 
 
     if(!$asset->broken){
-<<<<<<< HEAD
+
         $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetid)->pluck('kit_id'))->first();
-=======
+
         $assetIDinTable = DB::table('assets')->where('asset_tag', '=', $assetid)->pluck('asset_id');
         $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
-        var_dump($kit);
->>>>>>> Adds email notifications to several events. Revamps seeders to generate presentable data.
+
+
         $status = in_array($kit->kit_id, DB::table('transfers')->lists('kit_id')) && DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->pluck('status');
         $description = $asset->description;
         $destination = $status ? DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')
@@ -99,10 +99,8 @@ class KitController extends Controller {
                 $message->to($admin)->subject("Asset ".$data['asset_tag']." broken.");
             });
         }
-<<<<<<< HEAD
-        var_dump('Wrote to log');
-=======
->>>>>>> Adds email notifications to several events. Revamps seeders to generate presentable data.
+
+
     }
 	return redirect()->back();
 
@@ -180,26 +178,7 @@ class KitController extends Controller {
 	}
 	 public function add( KitAddEditFormRequest $kitnote)
 	{
-<<<<<<< HEAD
-	     $branches = DB::table('branches')->distinct()->orderBy('branch_name')->lists('branch_name');
-+        $kitstypes = DB::table('kit_types')->distinct()->orderBy('kit_type')->lists('kit_type');
-+    
-+        
- 	
-+	    $kitasset= new Kit();
-+	    $kitasset->kit_name = $kitnote->kitname;
-+	    $kitasset->barcode = "31221".$kitnote->barcode;
-+	    $kitasset->kit_type= $kitstypes[$kitnote->kittype];
-+	    $kitasset->branch = $branches[$kitnote->branch];
-+	    $kitasset->save();
-+	    
-+	    $kitID = DB::table('kits')->orderBy('created_at', 'desc')->first();
-+	
-+        $kitnote = new KitNote();
-+        $kitnote->kit_id = $kitID->kit_id;
-+        $kitnote->kit_note = '';
-+        $kitnote->save();
-=======
+
 	    $branches = DB::table('branches')->distinct()->orderBy('branch_name')->lists('branch_name');
         $kitstypes = DB::table('kit_types')->distinct()->orderBy('kit_type')->lists('kit_type');
     
@@ -218,7 +197,7 @@ class KitController extends Controller {
         $kitnote->kit_id = $kitID->kit_id;
         $kitnote->kit_note = '';
         $kitnote->save();
->>>>>>> Adds email notifications to several events. Revamps seeders to generate presentable data.
+
 
       
         $kits = DB::table('kits')->select('kit_id','kit_name','kit_type','branch','barcode')->get();
@@ -232,11 +211,9 @@ class KitController extends Controller {
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
 	    if(!$users->manager){
 	        $kits = DB::table('kits')->distinct()->get();
-<<<<<<< HEAD
-            return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not a manager.'));
-=======
+
             return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an manager.'));
->>>>>>> Adds email notifications to several events. Revamps seeders to generate presentable data.
+
 	    }
 	    DB::table('kits')->where('kit_id', $kitID)->delete();
 
@@ -246,5 +223,4 @@ class KitController extends Controller {
         return view('kits.index',array('kits'=>$kits))->with('message', 'Project deleted.');
 	}
 }
-
 

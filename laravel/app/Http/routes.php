@@ -68,6 +68,7 @@ Route::group(['middleware'=>'auth'], function() {
 
 Route::resource('welcome', 'WelcomeController@index');
 
+<<<<<<< HEAD
 //----------------------
 
 
@@ -111,4 +112,6 @@ Route::group(['middleware'=>'auth'], function() {
 });
 
 Route::resource('welcome', 'WelcomeController@index');*/
+=======
+>>>>>>> create kitnote tables in DB, Fixes db problems
 
