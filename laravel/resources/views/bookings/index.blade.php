@@ -1,10 +1,6 @@
 @extends('bookings/bookingnav')
 
-@extends('app')
-
-
-@section('content') 
-@section('bookingcontent')
+@section('content')
 
 <style>
     

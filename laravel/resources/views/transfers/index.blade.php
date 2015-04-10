@@ -1,4 +1,4 @@
-@extends('app')
+@extends('transfers/transfernav')
 
 @section('content')
         <h1> Incoming transfers:</h1>

@@ -1,4 +1,4 @@
-@extends('app')
+@extends('transfers/transfernav')
 
 @section('content')
         {!! Form::open() !!}

@@ -1,11 +1,10 @@
 @extends('bookings/bookingnav')
-@extends('app')
 
 @section('content')
-@section('bookingcontent')
+
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">Create Booking</div>
 				<div class="panel-body">
@@ -19,23 +18,17 @@
 							</ul>
 						</div>
 					@endif
-					<form class="form-horizontal" role="form" method="POST" action="confirm">
+					<form class="form-horizontal" role="form" method="POST" action="create_b">
 
 						<div class="form-group">
 							<label class="col-md-1 control-label">Kit Type:</label>
 							<div id="kit-type" class="col-md-3">
 								<select name="kitType" class="form-control">
-								    <option value='iPad'>iPad</option>
-								    <option value='Laptop'>Laptop</option>
+								    @foreach($kit_types as $type)
+								        <option value={{ $type }}>{{ $type }}</option>
+								    @endforeach
 								</select>
 							</div>
-					    </div>
-					    
-					    <div class="form-group">
-						    <label class="col-md-1 control-label">Event Name:</label>
-						    <div class="col-md-3">
-						        <input type="text" class="form-control" name="event_name">
-					        </div>
 					    </div>
 					    
 						<div class="form-group">
@@ -53,13 +46,12 @@
 						</div>
 						
 						<div class="form-group">
-							<label class="col-md-1 control-label">Branch Code:</label>
+							<label class="col-md-1 control-label">Event Location:</label>
 						    <div class="col-md-3">
 						        <select name="branch_code" class="form-control">
-								    <option value='1'>1</option>
-								    <option value='2'>2</option>
-								    <option value='3'>3</option>
-								    <option value='4'>4</option>
+								    @foreach($branch_codes as $i=>$code)
+								        <option value={{ $code }}>{{ $code }} - {{ $branch_names[$i] }}</option>
+								    @endforeach
 								</select>
 					        </div>
 						</div>
