@@ -21,6 +21,7 @@ Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@ind
 Route::delete('bookings/{booking_id}/destroy',['as' => 'bookings.destroy', 'middleware'=>'auth', 'uses'=>'BookingsController@destroy']);
 Route::get('bookings/create', ['middleware' => 'auth','uses' => 'BookingsController@create']);
 Route::post('bookings/create_b', ['middleware' => 'auth','uses' => 'BookingsController@create_b']);
+Route::post('bookings/{booking_id}/update_b', ['as' => 'bookings.update_b', 'middleware' => 'auth','uses' => 'BookingsController@update_b']);
 Route::post('bookings/confirm', ['middleware' => 'auth','uses' => 'BookingsController@confirm']);
 Route::post('bookings/store', ['middleware' => 'auth','uses' => 'BookingsController@store']);
 Route::get('bookings/landing', ['middleware' => 'auth','uses' => 'BookingsController@landing']);
@@ -62,7 +63,7 @@ Route::group(['middleware'=>'auth'], function() {
 });
 
 Route::group(['middleware'=>'auth'], function() {
-    Route::resource('bookings', 'BookingsController', array( 'except'=>'destroy'));
+    Route::resource('bookings', 'BookingsController', array( 'except'=>array('destroy', 'update_b')));
 });
 
 

@@ -15,15 +15,15 @@ use View;
 class BookingsController extends Controller {
     
     public function index () {
-
         $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
-        $branch = $user->branch;//getting the branch that the user belongs to
-        $bookings = DB::table('kits')->leftJoin('bookings', 'kits.kit_id', '=', 'bookings.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();
+        $branchbookings = DB::table('bookings')->where('bookings.branch', $user->branch)->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();//gets the user's branch bookings
         $assocs = DB::table('associations')->where('associated_user', $user->user_id)->lists('booking_id');//getting the bookings the user is associated to
         $assocbookings = DB::table('bookings')->whereIn('booking_id', $assocs)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->get();//gets the bookings the associated user is assigned to
-
-        return view('bookings.index', ['bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings]);
+        $userbookings = DB::table('bookings')->where('kit_user', $user->user_id)->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();//gets the bookings that the user created
+        
+		return view('bookings.index', ['bookings'=>$branchbookings, 'assocbookings'=>$assocbookings, 'userbookings'=>$userbookings]);
     }
+
     
     public function show($bookingID) {
     
@@ -39,9 +39,12 @@ class BookingsController extends Controller {
     
     public function edit($bookingID) {
         $bookingID = intval($bookingID);
-        $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
+        $booking = DB::table('bookings')->where('booking_id', $bookingID)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->first();
+        $types = DB::table('kits')->lists('kit_type');
+        $branch_codes = DB::table('branches')->lists('branch_code');
+        $branch_names = DB::table('branches')->lists('branch_name');
         
-        return view ('bookings.edit', ['bookings' => $booking]);
+        return view ('bookings.edit', ['booking' => $booking, 'types' => $types, 'branch_codes' => $branch_codes, 'branch_name' => $branch_names]);
     }
     
     public function destroy($bookingID) {
@@ -146,9 +149,71 @@ class BookingsController extends Controller {
             $input['event_name'] = preg_replace("/[\s]/", "_", $input['event_name']);
             
             $input['kit_name'] = DB::table('kits')->where('kit_id', $input['kit_id'])->pluck('kit_name');
-
             return view('bookings.confirm', $input);
             }
+    }
+    
+    public function update_b($bookingID){
+    
+        $input = Request::all();
+        // Applying validation rules.
+        var_dump($input);
+        $rules = array(
+            'kitType' => 'required',
+		    'Start_Date' => 'required|date|after:today',
+	    	'End_Date' => 'required|date|after:Start_Date',
+	    	'branch_code' => 'required'
+	        );
+        $validator = Validator::make($input, $rules);
+        if ($validator->fails()){
+            // If validation fails redirect back to login.
+            //return redirect()->back()->withInput(Input::except('dates'))->withErrors($validator);
+        }
+        else {
+            $kits = DB::table('kits')->where('kit_type', '=', $input['kitType'])->lists('kit_id');
+            foreach($kits as $kit){
+                $booking_start_dates = DB::table('bookings')->orderBy('booking_start')->where('kit_id', '=', $kit)->lists('booking_start');
+                $booking_end_dates = DB::table('bookings')->orderBy('booking_start')->where('kit_id', '=', $kit)->lists('booking_end');
+                $index = 0;
+                $available = true;
+                
+                $preBlackout = 1;
+                $postBlackout = 1;
+                
+                if(date("w",strtotime($input['Start_Date'])) == 1){$preBlackout = 4;}
+                if(date("w",strtotime($input['Start_Date'])) == 0){$preBlackout = 3;}
+                if(date("w",strtotime($input['End_Date'])) == 4 || date("w",strtotime($input['End_Date'])) == 5){$postBlackout = 4;}
+                if(date("w",strtotime($input['End_Date'])) == 6){$postBlackout = 2;}
+                
+                foreach($booking_start_dates as $start_date){
+                    if(strtotime($input['End_Date']) < strtotime($start_date) - ($postBlackout * 86400)){break;}
+                    elseif(strtotime($input['Start_Date']) < strtotime($booking_end_dates[$index]) + ($preBlackout * 86400)){
+                        $available = false;
+                        break;
+                    }
+                    $index++;
+                }
+                if($available){
+                    var_dump($input['branch_code']);
+                    $branch_uname = DB::table('users')->orderBy('name')->where('branch', $input['branch_code'])->lists('name');
+                    $branch_uid = DB::table('users')->orderBy('name')->where('branch', $input['branch_code'])->lists('user_id');
+                    
+                    $data = array(
+                        'branch_uname' => $branch_uname,
+                        'branch_uid' => $branch_uid,
+                        'kitType' => $input['kitType'],
+		                'Start_Date' => $input['Start_Date'],
+	    	            'End_Date' => $input['End_Date'],
+	    	            'branch_code' => $input['branch_code'],
+	    	            'kit_id' => $kit
+                    );
+                    var_dump($data);
+                    
+                    return view('bookings.update_b');
+                }
+            }
+            //return redirect()->back()->withInput(Input::except('dates'))->withErrors("No kit available for these dates.");
+        }
     }
     
     public function store(){
