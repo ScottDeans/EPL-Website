@@ -159,7 +159,6 @@ class BookingsController extends Controller {
     
         $input = Request::all();
         // Applying validation rules.
-        var_dump($input);
         $rules = array(
             'kitType' => 'required',
 		    'Start_Date' => 'required|date|after:today',
@@ -196,22 +195,18 @@ class BookingsController extends Controller {
                     $index++;
                 }
                 if($available){
-                    var_dump($input['branch_code']);
-                    $branch_uname = DB::table('users')->orderBy('name')->where('branch', $input['branch_code'])->lists('name');
-                    $branch_uid = DB::table('users')->orderBy('name')->where('branch', $input['branch_code'])->lists('user_id');
-                    
+
+                    $branchID = DB::table('branches')->where('branch_code', '=', $input['branch_code'])->first()->branch;
+                                     
                     $data = array(
-                        'branch_uname' => $branch_uname,
-                        'branch_uid' => $branch_uid,
                         'kitType' => $input['kitType'],
 		                'Start_Date' => $input['Start_Date'],
 	    	            'End_Date' => $input['End_Date'],
-	    	            'branch_code' => $input['branch_code'],
+	    	            'branch_code' => $branchID,
 	    	            'kit_id' => $kit
                     );
-                    var_dump($data);
-                    
-                    return view('bookings.update_b');
+                                    
+                    return view('bookings.update_b', ['data'=>$data]);
                 }
             }
             //return redirect()->back()->withInput(Input::except('dates'))->withErrors("No kit available for these dates.");
