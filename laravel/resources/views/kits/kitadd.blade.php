@@ -17,7 +17,7 @@
                 {!! Form::text('kitname', null, 
                 array('required', 
                     'class'=>'form-control',
-                    'placeholder'=>'Input damedge')) !!}
+                    'placeholder'=>'eg;ipad kit 5')) !!}
                  </div>
 
                 <div class="form-group">
@@ -41,7 +41,7 @@
                 {!! Form::text('barcode', null, 
                 array('required', 
                     'class'=>'form-control',
-                    'placeholder'=>'barcode')) !!}
+                    'placeholder'=>'eg;134278965745')) !!}
                 </div>
 
                 <div class="form-group">

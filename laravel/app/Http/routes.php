@@ -47,10 +47,10 @@ Route::get('kits/showadd',['as' => 'kits.showadd', 'middleware'=>'auth', 'uses'=
 Route::post('kits/{id}/add',['as' => 'kits.add', 'middleware'=>'auth', 'uses'=>'KitController@add']);
 Route::delete('kits/{booking_id}/destroy',['as' => 'kits.destroy', 'middleware'=>'auth', 'uses'=>'KitController@destroy']);
 Route::get('kits/{id}/report',['as' => 'kits.report', 'middleware'=>'auth', 'uses'=>'KitController@report']);
-
+Route::post('kits/addkittype',['as' => 'kits.addkittype', 'middleware'=>'auth', 'uses'=>'KitController@addkittype']);
 Route::get('kits/{id}/show',['as' => 'kits.show', 'middleware'=>'auth', 'uses'=>'KitController@show']);
 Route::group(['middleware'=>'auth'], function() {
-    Route::resource('kits', 'KitController', array( 'except'=>array('destroy','show','report','showadd')));
+    Route::resource('kits', 'KitController', array( 'except'=>array('destroy','show','report','showadd','addkittype')));
 });
 
 Route::group(['middleware'=>'auth'], function() {
@@ -67,4 +67,8 @@ Route::group(['middleware'=>'auth'], function() {
 
 
 Route::resource('welcome', 'WelcomeController@index');
+
+
+
+
 
