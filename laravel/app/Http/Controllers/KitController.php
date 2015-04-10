@@ -77,6 +77,7 @@ class KitController extends Controller {
 
 
     if(!$asset->broken){
+//<<<<<<< HEAD
 
         $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetid)->pluck('kit_id'))->first();
 
@@ -84,6 +85,11 @@ class KitController extends Controller {
         $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
 
 
+/*=======
+        $assetIDinTable = DB::table('assets')->where('asset_tag', '=', $assetid)->pluck('asset_id');
+        $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
+        var_dump($kit);
+>>>>>>> 67152e25b40f5fb646af41926a797af0af6b1e26*/
         $status = in_array($kit->kit_id, DB::table('transfers')->lists('kit_id')) && DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->pluck('status');
         $description = $asset->description;
         $destination = $status ? DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')
@@ -99,7 +105,6 @@ class KitController extends Controller {
                 $message->to($admin)->subject("Asset ".$data['asset_tag']." broken.");
             });
         }
-
 
     }
 	return redirect()->back();
