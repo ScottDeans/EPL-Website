@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 <div class="row">
-	<div class="col-md-8 col-md-offset-2">
+	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">Edit Booking {!! $bookings->booking_id !!} </div>
 			    <div class="panel-body">

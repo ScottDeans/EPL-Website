@@ -12,13 +12,12 @@
     	    </div>
     	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     	    	<ul class="nav navbar-nav">
-                    <li><a href="/kits">View Kits</a></li>
-                    <li><a href="{!!route('kits.showadd')!!}">Add Kits</a></li>
-					<li><a href="{!!route('kits.showaddtype')!!}">Add Kit Type</a></li>
+                    <li><a href="/transfers/index">View Transfers</a></li>
+    	            <li><a href="/transfers/create">New Transfer</a></li>
+    	            <li><a href="/transfers/update">Update Transfer</a></li>
     	        </ul>
     		</div>
         </div>
     </nav>
 @stop
-
 

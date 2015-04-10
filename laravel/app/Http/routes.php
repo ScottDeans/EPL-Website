@@ -18,8 +18,9 @@ Route::controllers([
 ]);
 
 Route::get('bookings', ['middleware' => 'auth','uses' => 'BookingsController@index']);
-Route::get('bookings/create', ['middleware' => 'auth','uses' => 'BookingsController@create']);
 Route::delete('bookings/{booking_id}/destroy',['as' => 'bookings.destroy', 'middleware'=>'auth', 'uses'=>'BookingsController@destroy']);
+Route::get('bookings/create', ['middleware' => 'auth','uses' => 'BookingsController@create']);
+Route::post('bookings/create_b', ['middleware' => 'auth','uses' => 'BookingsController@create_b']);
 Route::post('bookings/confirm', ['middleware' => 'auth','uses' => 'BookingsController@confirm']);
 Route::post('bookings/store', ['middleware' => 'auth','uses' => 'BookingsController@store']);
 Route::get('bookings/landing', ['middleware' => 'auth','uses' => 'BookingsController@landing']);

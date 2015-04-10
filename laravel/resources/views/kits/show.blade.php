@@ -1,9 +1,6 @@
 @extends('kits/kitnav')
 
-@extends('app')
-
 @section('content')
-@section('kitcontent')
 
    
 
