@@ -109,8 +109,8 @@ class BookingsController extends Controller {
                 }
                 if($available){
                     $branch = DB::table('branches')->where('branch_code', $input['branch_code'])->lists('branch');
-                    $branch_uname = DB::table('users')->orderBy('name')->where('branch', $branch)->lists('name');
-                    $branch_uid = DB::table('users')->orderBy('name')->where('branch', $branch)->lists('user_id');
+                    $branch_uname = DB::table('users')->orderBy('name')->where('user_id', '!=', Auth::User()->user_id)->lists('name');
+                    $branch_uid = DB::table('users')->orderBy('name')->where('user_id', '!=', Auth::User()->user_id)->lists('user_id');
                     $data = array(
                         'branch_uname' => $branch_uname,
                         'branch_uid' => $branch_uid,
@@ -139,6 +139,8 @@ class BookingsController extends Controller {
             return Redirect::to('/bookings/create_b')->withErrors($validator);
         }
         else {
+            if(!array_key_exists('associated_users', $input))
+                $input['associated_users'] = [];
             $associated_array = DB::table('users')->whereIn('user_id', $input['associated_users'])->lists('name');
             $associated_names = implode(', ', $associated_array);
             $input['associated_names'] = $associated_names;
@@ -220,37 +222,33 @@ class BookingsController extends Controller {
         $input = Request::all();
         $id_key = DB::table('bookings')->orderBy('booking_id', 'desc')->lists('booking_id');
         $input['event_name'] = preg_replace("/[_]/", " ", $input['event_name']);
-        $branch = DB::table('branches')->where('branch_code', $input['branch_code'])->lists('branch');
+        $branch = DB::table('branches')->where('branch_code', $input['branch_code'])->pluck('branch');
         
         $booking = new Booking();
         $booking->kit_user = Auth::User()->user_id;
-        $booking->branch = $input['branch_code'];
+        $booking->branch = $branch;
         $booking->booking_end = $input['End_Date'];
         $booking->booking_start = $input['Start_Date'];
         $booking->kit_id = $input['kit_id'];
-        $booking->booking_id = $id_key[0] + 1;
-        $booking->created_at = date("Y-m-d H:i:s", strtotime("now"));
         $booking->event_name = $input['event_name'];
         $booking->save();
         
+        $bookingID = DB::table('bookings')->orderBy('created_at', 'desc')->first()->booking_id;
         
-        $associated_users = explode(',', $input['associated_users']);
+        if (strlen($input['associated_users']) > 0)
+            $associated_users = explode(',', $input['associated_users']);
+        else
+            $associated_users = [];
+        
         foreach($associated_users as $user_id){
             $newAssoc = new Association();
-	        $newAssoc->booking_id = $id_key[0] + 1;
+	        $newAssoc->booking_id = $bookingID;
 	        $newAssoc->associated_user = $user_id;
 	    
 	        $newAssoc->save();
         }
-        
-        $newAssoc = new Association();
-	    $newAssoc->booking_id = $id_key[0] + 1;
-	    $newAssoc->associated_user = Auth::User()->user_id;
-	    
-	    $newAssoc->save();
-	    
-        
-        return view('bookings.landing', array('booking_id' => ($id_key[0] + 1)));
+	            
+        return view('bookings.landing', array('booking_id' => ($bookingID)));
 
     }
 }
