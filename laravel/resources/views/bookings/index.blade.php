@@ -23,49 +23,72 @@
 
 <table>
     <tr>
-        <th class="table_text">Event Name</th>
-        <th class="table_text">Booking User</th>
-        <th class="table_text">Kit Type</th>
-        <th class="table_text">Branch</th>
-        <th class="table_text">Booking Start Date</th>
-        <th class="table_text">Booking End Date</th>
+        <th>Event Name</th>
+        <th>Booking User</th>
+        <th>Kit Type</th>
+        <th>Branch</th>
+        <th>Booking Start Date</th>
+        <th>Booking End Date</th>
         <th> </th>
     </tr>
 
     @foreach ($assocbookings as $assocbookings)
-        @if(count($assocbookings) > 0)
-            <tr>
-                <td align="center" class="table_text">{!! $assocbookings->event_name !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->name !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->kit_type !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->branch_code !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->booking_start !!}</td>
-                <td align="center" class="table_text">{!! $assocbookings->booking_end !!}</td>
-                <td align="center" class="table_text">
-                    <div>
-                    {!! Form::open(array('route'=>array('bookings.show', $assocbookings->booking_id), 'method'=>'GET')) !!}
-			        {!! Form::submit('Detailed View') !!}
-			        {!! Form::close() !!}
-			        </div>
-                    
-                    <div>
-                    {!! Form::open(array('route'=>array('bookings.edit', $assocbookings->booking_id), 'method'=>'GET')) !!}
-			        {!! Form::submit('Edit Booking') !!}
-			        {!! Form::close() !!}
-                    </div>
-                    
-                    <div>
-                    {!! Form::open(array('route'=>array('bookings.destroy', $assocbookings->booking_id), 'method'=>'DELETE')) !!}
-			        {!! Form::submit('Delete Booking') !!}
-			        {!! Form::close() !!}
-                    </div>
-                </td>
-            </tr>
-        @else
-            <tr>
-                <td>You have no bookings</td>
-            </tr>
-        @endif
+        <tr>
+            <td>{!! $assocbookings->event_name !!}</td>
+            <td>{!! $assocbookings->name !!}</td>
+            <td>{!! $assocbookings->kit_type !!}</td>
+            <td>{!! $assocbookings->branch_code !!}</td>
+            <td>{!! $assocbookings->booking_start !!}</td>
+            <td>{!! $assocbookings->booking_end !!}</td>
+            <td>
+                <div>
+                {!! Form::open(array('route'=>array('bookings.show', $assocbookings->booking_id), 'method'=>'GET')) !!}
+		        {!! Form::submit('Detailed View') !!}
+		        {!! Form::close() !!}
+		        </div>
+                
+                <div>
+                {!! Form::open(array('route'=>array('bookings.edit', $assocbookings->booking_id), 'method'=>'GET')) !!}
+		        {!! Form::submit('Edit Booking') !!}
+		        {!! Form::close() !!}
+                </div>
+                
+                <div>
+                {!! Form::open(array('route'=>array('bookings.destroy', $assocbookings->booking_id), 'method'=>'DELETE')) !!}
+		        {!! Form::submit('Delete Booking') !!}
+		        {!! Form::close() !!}
+                </div>
+            </td>
+        </tr>
+    @endforeach
+    @foreach ($userbookings as $userbookings)
+        <tr>
+            <td>{!! $userbookings->event_name !!}</td>
+            <td>{!! $userbookings->name !!}</td>
+            <td>{!! $userbookings->kit_type !!}</td>
+            <td>{!! $userbookings->branch_code !!}</td>
+            <td>{!! $userbookings->booking_start !!}</td>
+            <td>{!! $userbookings->booking_end !!}</td>
+            <td>
+                <div>
+                {!! Form::open(array('route'=>array('bookings.show', $assocbookings->booking_id), 'method'=>'GET')) !!}
+		        {!! Form::submit('Detailed View') !!}
+		        {!! Form::close() !!}
+		        </div>
+                
+                <div>
+                {!! Form::open(array('route'=>array('bookings.edit', $assocbookings->booking_id), 'method'=>'GET')) !!}
+		        {!! Form::submit('Edit Booking') !!}
+		        {!! Form::close() !!}
+                </div>
+                
+                <div>
+                {!! Form::open(array('route'=>array('bookings.destroy', $assocbookings->booking_id), 'method'=>'DELETE')) !!}
+		        {!! Form::submit('Delete Booking') !!}
+		        {!! Form::close() !!}
+                </div>
+            </td>
+        </tr>
     @endforeach
 </table>
 
@@ -73,27 +96,26 @@
 
 <h4><br>Branch Bookings</h4>
 
-<table class="branch_table">
+<table>
     <tr>
-        <th class="table_text">Event Name</th>
-        <th class="table_text">Booking User</th>
-        <th class="table_text">Kit Type</th>
-        <th class="table_text">Branch</th>
-        <th class="table_text">Booking Start Date</th>
-        <th class="table_text">Booking End Date</th>
+        <th>Event Name</th>
+        <th>Booking User</th>
+        <th>Kit Type</th>
+        <th>Branch</th>
+        <th>Booking Start Date</th>
+        <th>Booking End Date</th>
         <th> </th>
     </tr>
 
     @foreach ($bookings as $bookings)
-        @if ($bookings->branch == $branch)
         <tr>
-            <td align="center" class="table_text">{!! $bookings->event_name !!}</td>
-            <td align="center" class="table_text">{!! $bookings->name !!}</td>
-            <td align="center" class="table_text">{!! $bookings->kit_type !!}</td>
-            <td align="center" class="table_text">{!! $bookings->branch_code !!}</td>
-            <td align="center" class="table_text">{!! $bookings->booking_start !!}</td>
-            <td align="center" class="table_text">{!! $bookings->booking_end !!}</td>
-            <td align="center" class="table_text">
+            <td>{!! $bookings->event_name !!}</td>
+            <td>{!! $bookings->name !!}</td>
+            <td>{!! $bookings->kit_type !!}</td>
+            <td>{!! $bookings->branch_code !!}</td>
+            <td>{!! $bookings->booking_start !!}</td>
+            <td>{!! $bookings->booking_end !!}</td>
+            <td>
                 <div>
                     {!! Form::open(array('route'=>array('bookings.show', $bookings->booking_id), 'method'=>'GET')) !!}
 			        {!! Form::submit('Detailed View') !!}
@@ -111,7 +133,6 @@
                 </div>
             </td>
         </tr>
-        @endif
     @endforeach
 </table>
 @stop
