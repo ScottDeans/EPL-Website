@@ -8,12 +8,13 @@
    <th>Name</th>
    <th>Email</th>
    <th>Admin</th>
+   <th></th>
    @foreach($users as $user)
     <tr>
         <td>{!! $user->name !!}</td>
         <td>{!! $user->email !!}</td>
-        <td>{!! $user->branch !!}</td>
-        <td>{!! Form::open(array('route'=>array('usermgmt.update', $user->id), 'method'=>'PUT')) !!}
+        <td>{!! $user->branch_code !!}</td>
+        <td>{!! Form::open(array('route'=>array('usermgmt.update', $user->user_id), 'method'=>'PUT')) !!}
             @if(!$user->admin)
                 {!! Form::submit('Grant Admin Status') !!}
             @else
@@ -25,4 +26,4 @@
    </table>
 
 @stop
-@stop
+

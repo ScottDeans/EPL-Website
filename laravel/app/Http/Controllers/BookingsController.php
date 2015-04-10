@@ -3,14 +3,16 @@
 use DB;
 use Auth;
 use App\Booking;
-use App\kits;
+use App\Kit;
 use App\Association;
+use App\Transfer;
 use Illuminate\Database\Eloquent\Model;
 use Request;
 use Validator;
 use Redirect;
 use Input;
 use View;
+use Mail;
 
 class BookingsController extends Controller {
     
@@ -18,8 +20,13 @@ class BookingsController extends Controller {
         $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
         $branchbookings = DB::table('bookings')->where('bookings.branch', $user->branch)->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();//gets the user's branch bookings
         $assocs = DB::table('associations')->where('associated_user', $user->user_id)->lists('booking_id');//getting the bookings the user is associated to
+      
         $assocbookings = DB::table('bookings')->whereIn('booking_id', $assocs)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->get();//gets the bookings the associated user is assigned to
+      
         $userbookings = DB::table('bookings')->where('kit_user', $user->user_id)->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();//gets the bookings that the user created
+        
+        
+       
         
 		return view('bookings.index', ['bookings'=>$branchbookings, 'assocbookings'=>$assocbookings, 'userbookings'=>$userbookings]);
     }
@@ -28,10 +35,10 @@ class BookingsController extends Controller {
     public function show($bookingID) {
     
         $bookingID = intval($bookingID);
-        $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
+        $booking = DB::table('bookings')->where('booking_id', $bookingID)->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->first();
         
         $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user');
-        $users = DB::table('users')->whereIn('user_id', $assocs)->get();
+        $users = DB::table('users')->whereIn('user_id', $assocs)->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
         
         return view('bookings.show', ['bookings'=> $booking, 'users'=>$users]);
 
@@ -40,7 +47,7 @@ class BookingsController extends Controller {
     public function edit($bookingID) {
         $bookingID = intval($bookingID);
         $booking = DB::table('bookings')->where('booking_id', $bookingID)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->first();
-        $types = DB::table('kits')->lists('kit_type');
+        $types = DB::table('kit_types')->lists('kit_type');
         $branch_codes = DB::table('branches')->lists('branch_code');
         $branch_names = DB::table('branches')->lists('branch_name');
         
@@ -49,15 +56,27 @@ class BookingsController extends Controller {
     
     public function destroy($bookingID) {
         $bookingID = intval($bookingID);
+        $booking = Booking::find($bookingID)->first();
+        $eventOwner = DB::table('users')->where('user_id', '=', $booking->kit_user)->first()->email;
         DB::table('bookings')->where('booking_id', '=', $bookingID)->delete();
         
-        $user = DB::table('users')->where('name', Auth::User()->name)->first(); //getting the username that matches the currently logged in user
-        $branch = $user->branch;//getting the branch that the user belongs to
-        $bookings = DB::table('kits')->leftJoin('bookings', 'kits.kit_id', '=', 'bookings.kit_id')->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->get();
-        $assocs = DB::table('associations')->where('associated_user', $user->user_id)->lists('booking_id');//getting the bookings the user is associated to
-        $assocbookings = DB::table('bookings')->whereIn('user_id', $assocs)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->leftJoin('users', 'bookings.kit_user', '=', 'users.user_id')->leftJoin('kits', 'bookings.kit_id', '=', 'kits.kit_id')->get();//gets the bookings the associated user is assigned to
         
-        return redirect()->back()->withInput(['bookings'=>$bookings, 'branch'=>$branch, 'assocbookings'=>$assocbookings]);
+        $transfer = Transfer::where('booking_id', '=', $bookingID)->first();
+        if ($transfer != null && $transfer->status == 0)
+            $transfer->delete();
+        
+        $data = [];
+        
+        $data['booking'] = $booking;
+        $data['deleter'] = Auth::User();
+        
+        Mail::send('emails.bookingDeleted', ['key' => $data], function($message) use($booking, $eventOwner){
+            $message->to($eventOwner)->subject("Your event booking '".$booking->event_name."' has been deleted.");
+        });
+        
+        
+        
+        return redirect('bookings/');
     }
 
     public function create() {
@@ -151,6 +170,7 @@ class BookingsController extends Controller {
             $input['event_name'] = preg_replace("/[\s]/", "_", $input['event_name']);
             
             $input['kit_name'] = DB::table('kits')->where('kit_id', $input['kit_id'])->pluck('kit_name');
+            $input['kit_barcode'] = Kit::find($input['kit_id'])->first()->barcode;
             return view('bookings.confirm', $input);
             }
     }

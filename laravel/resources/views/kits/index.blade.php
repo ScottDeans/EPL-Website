@@ -7,29 +7,26 @@
 @if($errors->any())
 <h4>{{$errors->first()}}</h4>
 @endif
-  <div class="container-fluid">
-   	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">All Kits</div>
-				    <div class="panel-body">        
+  
+				<h1>All Kits</h1>
+				           
                         <table class="responstable"> 
                         <table style="width:90%">
                             <tr>
-                            <th>kit_name</th>
-                            <th>kit_type</th>
-                            <th>barcode</th>
-                            <th>branch</th>
+                            <th>Kit Name</th>
+                            <th>Kit Type</th>
+                            <th>Barcode</th>
+                            <th>Branch</th>
                             <th>More Details</th>
                             </tr>
                             <tr>
                             @foreach ($kits as $value) 
                                 <tr>
-                                <td align="center">  {!! $value->kit_name!!} </td>
-                                <td align="center">   {!! $value->kit_type  !!} </td>
-                                <td align="center">  {!! $value->barcode!!} </td>
-                                <td align="center">  {!! $value->branch  !!} </td>
-                                <td align="center">{!! Form::open(array('route'=>array('kits.show',$value->kit_id),'method'=>'GET')) !!}
+                                <td>  {!! $value->kit_name!!} </td>
+                                <td>   {!! $value->kit_type  !!} </td>
+                                <td>  {!! $value->barcode!!} </td>
+                                <td>  {!! $value->branch_code  !!} </td>
+                                <td>{!! Form::open(array('route'=>array('kits.show',$value->kit_id),'method'=>'GET')) !!}
                                 {!! Form::submit('View Kit') !!}
                                 {!! Form::close() !!}	
                                  </tr>
@@ -38,12 +35,5 @@
                             </table>
                              @stop
                             @stop
-                </div>
-            </div>
-          </div>
-       </div>
-    </div>
-  </div>
-</div>
-
+                
 
