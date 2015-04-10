@@ -74,7 +74,7 @@ class TransfersController extends Controller {
             $arrivalDate = DB::table('bookings')->where('booking_id', '=', $o->booking_id)->pluck('booking_start');
             for ($i = 1, $checkDate = date('Y-m-d'); $checkDate < $arrivalDate; ){
                 $day = intval(date('N', strtotime($checkDate)));
-                if($day < 6 && !in_array($checkdate, $holidays))
+                if($day < 6 && !in_array($checkDate, $holidays))
                     $travelDays++;
                
                 $i++;
