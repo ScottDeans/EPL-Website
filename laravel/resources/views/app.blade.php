@@ -6,7 +6,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="/css/app.css" type="text/css"/>
-        <div class="quote">Edmonton Public Library</div>
+        <div class="quote"><h1>Edmonton Public Library</h1></div>
     </head>
     <body>
 	    <nav class="navbar navbar-default">
@@ -25,6 +25,9 @@
 	    				<li><a href="/bookings">Bookings</a></li>
 	    				<li><a href="/kits">Kits</a></li>
 	    				<li><a href="/transfers">Transfers</a></li>
+	    				@if (!Auth::guest() && Auth::User()->admin)
+	    				<li><a href="/usermgmt">User Management</a></li>
+	    				@endif
 	    			</ul>
 	    			<ul class="nav navbar-nav navbar-right">
 	    				@if (Auth::guest())

@@ -34,8 +34,9 @@
                             'class'=>'form-control')) !!}
                       </div>
                       <div class="form-group">
-                        {!! Form::label('barcode', 'Barcode Number:') !!}
-                        {!! Form::text('barcode', $kitID->barcode, 
+                        {!! Form::label('barcode', 'Barcode Number (Last 9 digits only!):') !!}
+                        <br>
+                       {!! Form::text('barcode', $kitID->barcode, 
                             array('required', 
                             'class'=>'form-control')) !!}
                        </div>

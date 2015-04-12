@@ -110,7 +110,7 @@ class TransfersController extends Controller {
             $manager = DB::table('users')->where('branch', '=', $l->source)->where('manager', '=', true)->pluck('email');
             
             $data = ['barcode' => $barcode, 'eventOwner' => $owner, 'eventName' => $eventName, 'dest' => $dest, 'src' => $src, 'manager' => $manager];
-            
+            if ($data['eventOwner'] != null);
             Mail::send('emails.lateKitShipment', ['key' => $data], function($message) use($data){
                 $message->to($data['eventOwner'])->subject("Kit #".$data['barcode']." for your event '".$data['eventName']."' will be late.");
             });

@@ -8,7 +8,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Confirmed Booking</div>
 				<div class="panel-body">
-					Your kit has been booked! The booking ID number is: {{ $booking_id }}
+					Your kit has been booked!
 				</div>	
 			</div>
 		</div>
