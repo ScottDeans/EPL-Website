@@ -3,7 +3,7 @@
 @section('content')
 
     <h1>Your Scheduled Bookings</h1>
-        @if(sizeof($userbookings) == 0)
+    @if(sizeof($userbookings) == 0)
         <p>You have not scheduled any bookings.</p>
     @else
     <table>
@@ -79,8 +79,7 @@
 		        {!! Form::submit('Detailed View') !!}
 		        {!! Form::close() !!}
 		        </div>
-                
-                
+
                 <div>
                 {!! Form::open(array('route'=>array('bookings.destroy', $assocbooking->booking_id), 'method'=>'DELETE')) !!}
 		        {!! Form::submit('Delete Booking') !!}
