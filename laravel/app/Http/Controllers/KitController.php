@@ -67,7 +67,6 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
 	}
     public function update($assetid)
 	{
-	    var_dump($assetid);
         $asset = DB::table('assets')->where('asset_tag', $assetid)->first();
 	    DB::table('assets')
             ->where('asset_tag', $asset->asset_tag)
@@ -76,7 +75,7 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
     
     if(!$asset->broken){
         $assetIDinTable = DB::table('assets')->where('asset_tag', '=', $assetid)->pluck('asset_id');
-     $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
+        $kit = DB::table('kits')->where('kit_id', '=', DB::table('kit_assets')->where('asset_id', '=', $assetIDinTable)->pluck('kit_id'))->first();
         
 
         $status = in_array($kit->kit_id, DB::table('transfers')->lists('kit_id')) && DB::table('transfers')->where('kit_id', '=', $kit->kit_id)->pluck('status');
@@ -108,7 +107,7 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
 	    $kits = DB::table('kits')->where('kit_id',$kitID)->first();
 	    $kits->barcode= substr($kits->barcode,5);
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
-	    if(!$users->manager){
+	    if(!($users->manager || $users->admin)){
 	        $kits = DB::table('kits')->distinct()->get();
             return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not a manager.'));
 	    }
@@ -133,7 +132,7 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
 	public function showadd()
 	{
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
-	    if(!$users->manager){
+	    if(!($users->manager || $users->admin)){
 	       $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.branch')->get();
             return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not a manager.'));
 	    }
@@ -148,7 +147,7 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
 	public function showaddtype()
 	{
 	    $users = DB::table('users')->where('name', Auth::User()->name)->first();
-	    if(!$users->manager){
+	    if(!($users->manager || $users-admin)){
 	     $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.branch')->get();
             return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an manager.'));
 	    }
@@ -199,7 +198,7 @@ $kits = DB::table('kits')->leftJoin('branches', 'kits.branch', '=', 'branches.br
 	public function destroy($kitID)
 	{
         $users = DB::table('users')->where('name', Auth::User()->name)->first();
-	    if(!$users->manager){
+	    if(!($users->manager || $users->admin)){
 	        $kits = DB::table('kits')->distinct()->get();
 
             return view('kits.index',array('kits'=>$kits))->withErrors(array('message' => 'You are not an manager.'));

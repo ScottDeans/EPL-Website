@@ -18,8 +18,8 @@ class AdminController extends Controller {
 	public function index()
 	{
 	    if (!Auth::User()->admin)
-	        return redirect()->back()->withErrors("Nice try, but you're not an admin.");
-	    $users = DB::table('users')->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
+	        return redirect()->back();
+	    $users = DB::table('users')->where('user_id', '!=', Auth::User()->user_id)->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
 		return view('usermgmt.index', ['users'=>$users]);
 	}
 
@@ -74,7 +74,7 @@ class AdminController extends Controller {
 	public function update($id)
 	{
 	    if (!Auth::User()->admin)
-	        return redirect()->back()->withErrors("Nice try, but you're not an admin.");
+	        return redirect()->back();
 		$user = User::find($id);
 		$user->admin = !$user->admin;
 		$user->save();

@@ -82,7 +82,7 @@
            
             {!! Form::close() !!}
             </div>	
-            @if(Auth::User()->manager)
+            @if(Auth::User()->manager || Auth::User()->admin)
           <div class="form-group">
             {!! Form::open(array('route'=>array('kits.edit',$kitinfo->kit_id),'method'=>'GET')) !!}
                 {!! Form::submit('Edit Kit',array('class'=>'btn btn-primary')) !!}
