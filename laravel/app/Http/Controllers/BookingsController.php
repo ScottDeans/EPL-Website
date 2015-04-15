@@ -108,8 +108,8 @@ class BookingsController extends Controller {
                 if(date("w",strtotime($input['End_Date'])) == 6){$postBlackout = 2;}
                 
                 foreach($booking_start_dates as $start_date){
-                    if(strtotime($input['End_Date']) < strtotime($start_date) - ($postBlackout * 86400)){break;}
-                    elseif(strtotime($input['Start_Date']) < strtotime($booking_end_dates[$index]) + ($preBlackout * 86400)){
+                    if(strtotime($input['End_Date']) + ($postBlackout * 86400) < strtotime($start_date)){break;}
+                    elseif(strtotime($input['Start_Date']) - ($preBlackout * 86400) < strtotime($booking_end_dates[$index])){
                         $available = false;
                         break;
                     }
@@ -196,8 +196,8 @@ class BookingsController extends Controller {
                 if(date("w",strtotime($input['End_Date'])) == 6){$postBlackout = 2;}
                 
                 foreach($booking_start_dates as $start_date){
-                    if(strtotime($input['End_Date']) < strtotime($start_date) - ($postBlackout * 86400)){break;}
-                    elseif(strtotime($input['Start_Date']) < strtotime($booking_end_dates[$index]) + ($preBlackout * 86400)){
+                    if(strtotime($input['End_Date']) + ($postBlackout * 86400) < strtotime($start_date)){break;}
+                    elseif(strtotime($input['Start_Date']) - ($preBlackout * 86400) < strtotime($booking_end_dates[$index])){
                         $available = false;
                         break;
                     }
