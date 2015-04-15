@@ -28,9 +28,9 @@ Route::get('bookings/landing', ['middleware' => 'auth','uses' => 'BookingsContro
 Route::get('kits', ['middleware' => 'auth','uses' => 'KitController@index']);
 Route::get('transfers', ['middleware' => 'auth','uses' => 'TransfersController@index']);
 
+
 Route::delete('associations/{booking_id}/{user_id}/destroy',['as' => 'associations.destroy', 'middleware'=>'auth', 'uses'=>'AssociationsController@destroy']);
 Route::post('associations/{booking_id}/{user_id}/store',['as' => 'associations.store', 'middleware'=>'auth', 'uses'=>'AssociationsController@store']);
-
 
 Route::group(['middleware'=>'auth'], function() {
     Route::resource('associations', 'AssociationsController', array( 'except'=>array('destroy', 'store')));
@@ -56,6 +56,11 @@ Route::group(['middleware'=>'auth'], function() {
 
 Route::group(['middleware'=>'auth'], function() {
     Route::resource('usermgmt', 'AdminController');
+});
+
+Route::get('assets/confirm',['as' => 'assets.confirm', 'middleware'=>'auth', 'uses'=>'AssetController@confirm']);
+Route::group(['middleware'=>'auth'], function() {
+    Route::resource('assets', 'AssetController');
 });
 
 Route::group(['middleware'=>'auth'], function() {

@@ -12,6 +12,7 @@
                             <th>asset tag</th>
                             <th>description</th>
                             <th>Condition</th>
+                            <th></th>
                             @foreach($users as $asset)
                                 <tr>
                                 <td>{!! $asset->asset_tag !!}</td>
