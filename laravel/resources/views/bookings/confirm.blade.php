@@ -24,7 +24,7 @@
 					?>
 					Kit Name:             {{ $kit_name }}
 					<br></br>
-					Kit ID:               {{ $kit_id }}
+					Kit ID:               {{ $kit_barcode }}
 					<br></br>
 					Kit Type:             {{ $kitType }}
 					<br></br>

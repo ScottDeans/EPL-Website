@@ -40,7 +40,7 @@ class AssociationsController extends Controller {
 	 */
 	public function store($bookingID, $userID)
 	{
-	   
+	    
 	    $newAssoc = new Association();
 	    $newAssoc->booking_id = $bookingID;
 	    $newAssoc->associated_user = $userID;
@@ -50,7 +50,8 @@ class AssociationsController extends Controller {
 	    $associate = User::Find($userID);
 	    $branch = Branch::Find($booking->branch);
 	    
-	    $emailData = [$associate->name, Auth::User()->name, $booking->event_name, $branch->branch_code.' ('.$branch->branch_name.')', $booking->booking_start, $booking->booking_end];
+	    $emailData = ['associate'=>$associate->name, 'adder'=>Auth::User()->name, 'event'=>$booking->event_name, 'branch'=> $branch->branch_code.' ('.$branch->branch_name.')', 'start'=>$booking->booking_start, 'end'=>$booking->booking_end];
+	    
 	    
 	    Mail::send('emails.associateWithBooking', ['key' => $emailData], function($message) use ($associate){
 	        $message->to($associate->email)->subject("You've been added to a booking!");
@@ -68,10 +69,10 @@ class AssociationsController extends Controller {
     
     public function show($bookingID){
         $bookingID = intval($bookingID);
-        $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
+        $booking = DB::table('bookings')->where('booking_id', $bookingID)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->first();
         
         $assocs = DB::table('associations')->where('booking_id',$bookingID)->lists('associated_user');
-        $users = DB::table('users')->whereIn('user_id', $assocs)->get();
+        $users = DB::table('users')->whereIn('user_id', $assocs)->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
         
         
         return view('associations.show', ['booking' => $booking, 'users' => $users]);
@@ -86,10 +87,10 @@ class AssociationsController extends Controller {
 	public function edit($id)
 	{
 	    $bookingID = intval($id);
-	    $booking = DB::table('bookings')->where('booking_id', $bookingID)->first();
+	    $booking = DB::table('bookings')->where('booking_id', $bookingID)->leftJoin('branches', 'bookings.branch', '=', 'branches.branch')->first();
 	    
 	    $assocs = DB::table('associations')->where('booking_id', $bookingID)->lists('associated_user');
-	    $users = DB::table('users')->whereNotIn('user_id', $assocs)->get();
+	    $users = DB::table('users')->whereNotIn('user_id', $assocs)->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
 	    
 		return view('associations.edit', ['booking' => $booking, 'users' => $users]);
 	}

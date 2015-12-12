@@ -31,7 +31,7 @@
 					    <div class="form-group">
 						    <label class="col-md-1 control-label">Associated Employees:<br>(Hold Ctrl to select multiple)</label>
 						    <div class="col-md-4">
-						        <select name="associated_users[]" multiple size=5>
+						        <select name="associated_users[]" multiple size=10>
 						            @foreach($branch_uid as $index => $id )
                                         <option value={{ $id }}>{{ $branch_uname[$index] }}
                                     @endforeach

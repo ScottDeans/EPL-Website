@@ -28,7 +28,7 @@
             
             <div>
             {!! Form::label('location', 'Branch:') !!}
-            {!! Form::label('branch', $kitinfo->branch ) !!}
+            {!! Form::label('branch', $kitinfo->branch_code.' ('.$kitinfo->branch_name.')' ) !!}
             </div>
             
             <div>
@@ -41,25 +41,30 @@
              <th>Asset</th>
              <th>Description</th>
              <th>Condition</th>
+             <th></th>
             
             @foreach ($assets as $asset)
              <tr>
             <td>{!! $asset->asset_tag !!} </td>
             <td>{!! $asset->description !!} </td>
-             @if($asset->broken==0)
-                  <td>{!! "Good" !!} </td>
-                             <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
-                {!! Form::submit('Report Broken') !!}
-                {!! Form::close() !!}</td>	
-            </tr>
+            
+            
+            <td>  @if($asset->broken==0)
+            Good
             @else
-                  <td>{!! "Broken" !!} </td>
-           
-            <td align="center">{!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
-                {!! Form::submit('Report Fixed') !!}
-                {!! Form::close() !!}</td>	
+            Broken
+            @endif
+            </td>
+            <td>
+            {!! Form::open(array('route'=>array('kits.update',$asset->asset_tag),'method'=>'PUT')) !!}
+                    <?php $buttonMessage = $asset->broken == 0 ? "Report Broken" : "Report Fixed" ?>
+                    
+                     {!! Form::submit($buttonMessage) !!}
+                     {!! Form::close() !!}
+            </td>
             </tr>
-             @endif
+            
+           
             @endforeach
              </table>
             </div>  
@@ -77,14 +82,17 @@
            
             {!! Form::close() !!}
             </div>	
+            @if(Auth::User()->manager || Auth::User()->admin)
           <div class="form-group">
             {!! Form::open(array('route'=>array('kits.edit',$kitinfo->kit_id),'method'=>'GET')) !!}
                 {!! Form::submit('Edit Kit',array('class'=>'btn btn-primary')) !!}
             {!! Form::close() !!}</div>	
+            
              <div class="form-group">       
            {!! Form::open(array('route'=>array('kits.destroy',$kitinfo->kit_id),'method'=>'DELETE')) !!}
                 {!! Form::submit('Delete Kit',array('class'=>'btn btn-delete')) !!}
            {!! Form::close() !!}</div>	
+           @endif
       	
             </div>
            </div>

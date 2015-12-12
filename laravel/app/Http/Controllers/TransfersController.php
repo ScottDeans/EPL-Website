@@ -10,7 +10,7 @@ class TransfersController extends Controller {
 
     public function index() {
         $userBranch = Auth::User()->branch;
-        TransfersController::dailyRun();
+       
         $incoming = DB::table('transfers')->where('destination', '=', $userBranch)->where('status', '=', 1)
                                           ->leftJoin('kits', 'transfers.kit_id', '=', 'kits.kit_id')->get();
         $outgoing = DB::table('transfers')->where('source', '=', $userBranch)->where('status', '=', 0)->leftJoin('branches', 'transfers.destination', '=', 'branches.branch')
@@ -74,7 +74,7 @@ class TransfersController extends Controller {
             $arrivalDate = DB::table('bookings')->where('booking_id', '=', $o->booking_id)->pluck('booking_start');
             for ($i = 1, $checkDate = date('Y-m-d'); $checkDate < $arrivalDate; ){
                 $day = intval(date('N', strtotime($checkDate)));
-                if($day < 6 && !in_array($checkdate, $holidays))
+                if($day < 6 && !in_array($checkDate, $holidays))
                     $travelDays++;
                
                 $i++;
@@ -94,9 +94,10 @@ class TransfersController extends Controller {
 
 
         foreach ($urgent as $u){
-            Mail::send('emails.shipKitNotification', ['key' => $u], function($message) use($u){
-                $message->to($u->email)->subject("Urgent attention required for kit ".$u->barcode."!");
-            });
+            if($u->email != null)
+               Mail::send('emails.shipKitNotification', ['key' => $u], function($message) use($u){
+                    $message->to($u->email)->subject("Urgent attention required for kit ".$u->barcode."!");
+               });
         }
         
         foreach ($late as $l){
@@ -110,10 +111,10 @@ class TransfersController extends Controller {
             $manager = DB::table('users')->where('branch', '=', $l->source)->where('manager', '=', true)->pluck('email');
             
             $data = ['barcode' => $barcode, 'eventOwner' => $owner, 'eventName' => $eventName, 'dest' => $dest, 'src' => $src, 'manager' => $manager];
-            
-            Mail::send('emails.lateKitShipment', ['key' => $data], function($message) use($data){
-                $message->to($data['eventOwner'])->subject("Kit #".$data['barcode']." for your event '".$data['eventName']."' will be late.");
-            });
+            if ($data['eventOwner'] != null)
+                 Mail::send('emails.lateKitShipment', ['key' => $data], function($message) use($data){
+                    $message->to($data['eventOwner'])->subject("Kit #".$data['barcode']." for your event '".$data['eventName']."' will be late.");
+                 });
         }
     }
 }

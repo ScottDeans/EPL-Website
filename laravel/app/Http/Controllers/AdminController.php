@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
 use App\User;
 use DB;
 use App\Http\Requests;
@@ -16,7 +17,9 @@ class AdminController extends Controller {
 	 */
 	public function index()
 	{
-	    $users = DB::table('users')->get();
+	    if (!Auth::User()->admin)
+	        return redirect()->back();
+	    $users = DB::table('users')->where('user_id', '!=', Auth::User()->user_id)->leftJoin('branches', 'users.branch', '=', 'branches.branch')->get();
 		return view('usermgmt.index', ['users'=>$users]);
 	}
 
@@ -70,12 +73,13 @@ class AdminController extends Controller {
 	 */
 	public function update($id)
 	{
+	    if (!Auth::User()->admin)
+	        return redirect()->back();
 		$user = User::find($id);
 		$user->admin = !$user->admin;
 		$user->save();
 		
-		$users = DB::table('users')->get();
-		return redirect()->back()->withInput(['users', $users]);
+		return redirect('usermgmt/');
 	}
 
 	/**
